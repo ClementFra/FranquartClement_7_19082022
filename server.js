@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 require("./config/db.config");
 require("dotenv").config();
+const router = require("./app/routes/index");
 
 // Settings cors
 var corsOptions = {
@@ -28,6 +29,8 @@ app.use((req, res, next) => {
 // Middleware corps
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use("/api", router);
+app.use(express.urlencoded({ extended: true }));
 
 // Security
 
@@ -38,6 +41,10 @@ const helmet = require("helmet");
 
 app.use(mongoSanitize());
 app.use(helmet.crossOriginEmbedderPolicy());
+
+// Path for images
+
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Port listener for requests
 const PORT = process.env.PORT || 8000;
