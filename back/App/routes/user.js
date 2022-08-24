@@ -10,6 +10,8 @@ const rateLter = require("../middleware/rate-limiter");
 
 router.post("/signup",pswd, userCtrl.signup);
 router.post("/login",rateLter, userCtrl.login);
+router.post("/:id/follow", auth, userCtrl.follow);
+router.post("/:id/unfollow", auth, userCtrl.unfollow);
 
 // Router get
 
@@ -24,9 +26,5 @@ router.put('/', auth, userCtrl.updateUser);
 
 router.delete('/', auth, userCtrl.deleteUser);
 
-// Router Patch
-
-router.patch("/:id/follow", auth, userCtrl.follow);
-router.patch("/:id/unfollow", auth, userCtrl.unfollow);
 
 module.exports = router;
