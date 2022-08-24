@@ -1,4 +1,4 @@
-// Import the sauce model
+// Import the post model
 const Post = require("../models/post");
 // File system
 const fs = require("fs");
@@ -7,7 +7,7 @@ const fs = require("fs");
  *****************  READ POST BY  ID     ************************
  *****************************************************************/
 exports.readPost = (req, res, next) => {
-  Sauce.findById(req.params.id) // Find the sauce in database
+  Sauce.findById(req.params.id) // Find the post in database
     .then((post) => {
       post.imageUrl = `${req.protocol}://${req.get("host")}${post.imageUrl}`; // Add image URL
       res.status(200).json(hateoasLinks(req, post, post._id)); // Request ok
