@@ -3,11 +3,38 @@ const uniqueValidator = require(`mongoose-unique-validator`);
 
 // Setting schema for a user
 const userSchema = mongoose.Schema({
-    email:{type: String, required: true, unique: true},
-    password:{type: String, required: true},
-    username: {type: String,required: true,unique: true,minlength: 3,maxlength: 50,trim: true},
-    followers: [{type: String,default: 0,ref: "User"}],
-    following: [{type: String,default: 0,ref: "User"}]
+    email:{
+        type: String,
+        required: true,
+        unique: true
+    },
+    password:{
+        type: String, 
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        minlength: 3,
+        maxlength: 50,
+        trim: true
+    },
+    followers: [{
+        type: String,
+        default: 0,
+        ref: "User"
+    }],
+    following: [{
+        type: String,
+        default: 0,
+        ref: "User"
+    }],
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 },{
     timestamps: true
 });
