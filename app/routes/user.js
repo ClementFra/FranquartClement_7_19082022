@@ -10,12 +10,11 @@ const rateLter = require("../middleware/rate-limiter");
 
 router.post("/signup",pswd, userCtrl.signup);
 router.post("/login",rateLter, userCtrl.login);
-router.post("/:id/follow", auth, userCtrl.follow);
-router.post("/:id/unfollow", auth, userCtrl.unfollow);
 
 // Router get
-
+router.get('/logout', userCtrl.logout);
 router.get('/', auth, userCtrl.readUser);
+router.get('/:id', auth, userCtrl.readOneUser);
 router.get('/export', auth, userCtrl.exportUser);
 
 // Router put

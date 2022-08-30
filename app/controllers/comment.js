@@ -1,4 +1,3 @@
-const User = require("../models/user");
 const Post = require("../models/post");
 const Comment = require("../models/comment");
 
@@ -14,7 +13,7 @@ exports.readOneComment = (req, res, next) => {
           comment.imageUrl
         }`;
       }
-      res.status(200).json(comment, hateoasLinks(req, comment._id));
+      res.status(200).json( hateoasLinks(req,comment,comment._id));
     })
     .catch((error) => res.status(404).json(error));
 };
@@ -57,7 +56,7 @@ exports.createComment = (req, res, next) => {
         }
       )
         .then(() =>
-          res.status(201).json(newComment, hateoasLinks(req, newComment._id))
+          res.status(201).json(hateoasLinks(req,newComment,newComment._id))
         )
         .catch((error) => res.status(400).json(error));
     })
@@ -95,7 +94,7 @@ exports.likeComment = (req, res, next) => {
               .then((commentUpdated) =>
                 res
                   .status(200)
-                  .json(commentUpdated, hateoasLinks(req, commentUpdated._id))
+                  .json(hateoasLinks(req,commentUpdated,commentUpdated._id))
               )
               .catch((error) =>
                 res.status(400).json({
@@ -131,7 +130,7 @@ exports.likeComment = (req, res, next) => {
               .then((commentUpdated) =>
                 res
                   .status(200)
-                  .json(commentUpdated, hateoasLinks(req, commentUpdated._id))
+                  .json(hateoasLinks(req,commentUpdated,commentUpdated._id))
               )
               .catch((error) =>
                 res.status(400).json({
@@ -160,12 +159,12 @@ exports.updateComment = (req, res, next) => {
   Comment.findById(req.params.id).then((comment) => {
     if (!comment) {
       return res.status(404).json({
-        error: "No such comment !",
+        error: "No comment !",
       });
     }
     if (comment.userId !== req.auth.userId) {
       return res.status(403).json({
-        error: "Unauthorized request!",
+        error: "Unauthorized !",
       });
     }
     Comment.findByIdAndUpdate(
@@ -182,7 +181,7 @@ exports.updateComment = (req, res, next) => {
       .then((commentUpdated) =>
         res
           .status(200)
-          .json(commentUpdated, hateoasLinks(req, commentUpdated._id))
+          .json(hateoasLinks(req,commentUpdated,commentUpdated._id))
       )
       .catch((error) => res.status(400).json(error));
   });
@@ -198,7 +197,7 @@ exports.deleteComment = (req, res, next) => {
     .then((postFound) => {
       if (!postFound) {
         return res.status(404).json({
-          error: "No such post !",
+          error: "No post !",
         });
       }
       Post.findOneAndUpdate(
@@ -210,22 +209,16 @@ exports.deleteComment = (req, res, next) => {
         },
         {
           new: true,
-          upsert: true,
-          setDefaultsOnInsert: true,
         }
       )
         .then(() => {
           Comment.findByIdAndDelete(req.params.id)
             .then((comment) => {
               if (!comment) {
-                return res.status(404).json({
-                  error: "No such comment !",
-                });
+                return res.status(404).json({error: "No comment !"});
               }
               if (comment.userId !== req.auth.userId) {
-                return res.status(403).json({
-                  error: "Unauthorized request!",
-                });
+                return res.status(403).json({error: "Unauthorized !"});
               }
               res.sendStatus(204);
             })
@@ -241,7 +234,7 @@ exports.deleteComment = (req, res, next) => {
  *****************************************************************/
 const hateoasLinks = (req, id) => {
   const URI = `${req.protocol}://${req.get("host") + "/api/comments/"}`;
-  return [
+  const hateoas= [
     {
       rel: "readOne",
       title: "ReadOne",
@@ -285,4 +278,8 @@ const hateoasLinks = (req, id) => {
       method: "POST",
     },
   ];
+  return{
+    ...comment.toObject(),
+    links:hateoas,
+  }
 };
