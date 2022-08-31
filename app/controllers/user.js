@@ -225,7 +225,7 @@ exports.exportUser = (req, res, next) => {
         user.email = decrypt(user.email);
         const userText = user.toString();
         res.attachment("user-data.txt");
-        return res.status(200).json(hateoasLinks(req, user)); // Request ok
+        return res.status(200).json(userText); // Request ok
       }
     })
     .catch(

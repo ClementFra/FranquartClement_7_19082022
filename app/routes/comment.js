@@ -4,15 +4,11 @@ const commentCtrl = require('../controllers/comment');
 const auth = require('../middleware/auth');
 
 
-// Router get
-
-router.get("/:id", auth, commentCtrl.readOneComment);
-router.get("/", auth, commentCtrl.readAllComments);
 
 // Router post
 
 router.post("/", auth, commentCtrl.createComment);
-router.post("/:id/like", auth, commentCtrl.likeComment);
+
 
 // Router put
 

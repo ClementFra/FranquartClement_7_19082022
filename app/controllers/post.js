@@ -1,5 +1,6 @@
 // Import the post model
 const Post = require("../models/post");
+const Comment = require("../models/comment");
 // File system
 const fs = require("fs");
 
@@ -7,13 +8,29 @@ const fs = require("fs");
  *****************  READ POST BY  ID     ************************
  *****************************************************************/
 exports.readPost = (req, res, next) => {
-  Post.findById(req.params.id) // Find the post in database
+  Post.findById(req.params.id)
     .then((post) => {
-      post.imageUrl = `${req.protocol}://${req.get("host")}${post.imageUrl}`; // Add image URL
-      res.status(200).json(hateoasLinks(req, post, post._id)); // Request ok
+      if (req.body.imageUrl) {
+        post.imageUrl = `${req.protocol}://${req.get("host")}${post.imageUrl}`;
+      }
+      if (req.body.comments) {
+        Comment.find({ postId: req.body.postId })
+          .then(() => {
+            res.status(200).json();
+          })
+          .catch((error) =>
+            res.status(400).json({
+              error: error,
+            })
+          );
+      }
+
+      res.status(200).json(hateoasLinks(req, post, post._id));
     })
-    .catch(
-      (error) => res.status(404).json({ error }) // Error not found
+    .catch((error) =>
+      res.status(404).json({
+        error,
+      })
     );
 };
 
@@ -38,18 +55,13 @@ exports.readAllPosts = (req, res, next) => {
  *****************    CREATE NEW POST       **********************
  *****************************************************************/
 exports.createPost = (req, res, next) => {
-  if (!req.body.post) {
-    return res.status(422).json({
-      message: "Post not found !",
-    });
-  }
   // Creation new model post
   const postObject = JSON.parse(req.body.post); // Get the post object
   delete postObject._id; // Delete the id
   const post = new Post({
     ...postObject, // Add the post object
     userId: req.auth.userId,
-    imageUrl:`/images/${req.file.filename}`,
+    imageUrl: `/images/${req.file.filename}`,
   });
   // Create new post
   post
@@ -115,7 +127,7 @@ exports.updatePost = (req, res, next) => {
  *****************     DELETE THE POST          ******************
  *****************************************************************/
 exports.deletePost = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id }) // Find sauce
+  Post.findOne({ _id: req.params.id }) // Find post
     .then((post) => {
       if (post.userId !== req.auth.userId) {
         return res.status(403).json({ message: "non-authorization !" }); // If the user is not the creator => unauthorized message
@@ -123,7 +135,7 @@ exports.deletePost = (req, res, next) => {
       const filename = post.imageUrl.split("/images/")[1];
       // Delete
       fs.unlink(`images/${filename}`, () => {
-        Sauce.deleteOne({ _id: req.params.id })
+        Post.deleteOne({ _id: req.params.id })
           .then(() => res.status(204).send()) // No content
           .catch((error) => res.status(400).json({ error })); // Error bad request
       });
@@ -134,87 +146,70 @@ exports.deletePost = (req, res, next) => {
  *****************  LIKE OR DISLIKE A POST     *******************
  *****************************************************************/
 exports.likePost = (req, res, next) => {
-  Post.findById(req.params.id)
-    .then((postFound) => {
-      switch (req.body.like) {
+  Post.findOne({ _id: req.params.id })
+    .then((post) => {
+      const userLikedPost = post.usersLiked.includes(req.auth.userId);
+      let toChange = {};
+      switch (req.body.likes) {
         case 1:
-          if (!postFound.usersLiked.includes(req.auth.userId)) {
-            Post.findByIdAndUpdate(
-              {
-                _id: req.params.id,
-              },
-              {
-                $inc: {
-                  likes: 1,
-                },
-                $push: {
-                  usersLiked: req.auth.userId,
-                },
-              },
-              {
-                new: true,
-              }
-            )
-              .then((postUpdated) =>
+          toChange = {
+            $inc: { likes: 1 },
+            $push: { usersLiked: req.auth.userId },
+          };
+
+          if (!userLikedPost) {
+            Post.findByIdAndUpdate({ _id: req.params.id }, toChange, {
+              new: true,
+              setDefaultsOnInsert: true,
+              upsert: true,
+            })
+              .then((postUpdated) => {
                 res
                   .status(200)
-                  .json(hateoasLinks(req, postUpdated, postUpdated._id))
-              )
-              .catch((error) =>
-                res.status(400).json({
-                  error,
-                })
-              );
+                  .json(hateoasLinks(req, postUpdated, postUpdated._id));
+              })
+              .catch((error) => res.status(400).json({ error }));
           } else {
-            res.status(200).json({
-              message: "User has already liked this post",
-            });
+            res.status(200).json({ message: "You have already like this post" });
           }
           break;
         case 0:
-          if (postFound.usersLiked.includes(req.auth.userId)) {
-            Post.findByIdAndUpdate(
-              {
-                _id: req.params.id,
-              },
-              {
-                $inc: {
-                  likes: -1,
-                },
-                $pull: {
-                  usersLiked: req.auth.userId,
-                },
-              },
-              {
-                new: true,
-              }
-            )
-              .then((postUpdated) =>
+          toChange = {
+            $inc: { likes: -1 },
+            $pull: { usersLiked: req.auth.userId },
+          };
+          if (userLikedPost) {
+            Post.findByIdAndUpdate({ _id: req.params.id }, toChange, {
+              new: true,
+              setDefaultsOnInsert: true,
+              upsert: true,
+            })
+              .then((postUpdated) => {
                 res
                   .status(200)
-                  .json(hateoasLinks(req, postUpdated, postUpdated._id))
-              )
-              .catch((error) =>
-                res.status(400).json({
-                  error,
-                })
-              );
+                  .json(hateoasLinks(req, postUpdated, postUpdated._id));
+              })
+              .catch((error) => res.status(400).json({ error }));
           } else {
-            res.status(200).json({
-              message: "User's like is already reset",
-            });
+            res.status(200).json({ message: " User don't have like this post" });
           }
           break;
+        default:
+          res.status(422).json({ message: "Invalid value for like" });
       }
     })
-    .catch((error) => res.status(404).json({ error }));
+    .catch((error) =>
+      res.status(400).json({
+        error,
+      })
+    );
 };
 
 /*****************************************************************
  *****************     HATEOAS FOR POST      *********************
  *****************************************************************/
-const hateoasLinks = (req, sauce, id) => {
-  const URI = `${req.protocol}://${req.get("host") + "/api/sauces/"}`;
+const hateoasLinks = (req, post, id) => {
+  const URI = `${req.protocol}://${req.get("host") + "/api/posts/"}`;
   const hateoas = [
     {
       rel: "readSingle",

@@ -2,34 +2,6 @@ const Post = require("../models/post");
 const Comment = require("../models/comment");
 
 /*****************************************************************
- *****************       READ ONE COMMENT       ******************
- *****************************************************************/
-
-exports.readOneComment = (req, res, next) => {
-  Comment.findById(req.params.id)
-    .then((comment) => {
-      if (req.body.imageUrl) {
-        comment.imageUrl = `${req.protocol}://${req.get("host")}${
-          comment.imageUrl
-        }`;
-      }
-      res.status(200).json( hateoasLinks(req,comment,comment._id));
-    })
-    .catch((error) => res.status(404).json(error));
-};
-
-/*****************************************************************
- *****************       READ ALL COMMENT       ******************
- *****************************************************************/
-exports.readAllComments = (req, res, next) => {
-  Comment.find({
-    postId: req.body.postId,
-  })
-    .then((onePostComments) => res.status(200).json(onePostComments))
-    .catch((error) => res.status(404).json(error));
-};
-
-/*****************************************************************
  *****************       CREATE NEW COMMENT      *****************
  *****************************************************************/
 
@@ -63,94 +35,6 @@ exports.createComment = (req, res, next) => {
     .catch((error) => res.status(400).json(error));
 };
 
-/*****************************************************************
- *****************         LIKE COMMENT     **********************
- *****************************************************************/
-
-exports.likeComment = (req, res, next) => {
-  Comment.findById(req.params.id)
-    .then((commentFound) => {
-      switch (req.body.like) {
-        case 1:
-          if (!commentFound.usersLiked.includes(req.auth.userId)) {
-            Comment.findByIdAndUpdate(
-              {
-                _id: req.params.id,
-              },
-              {
-                $inc: {
-                  likes: 1,
-                },
-                $push: {
-                  usersLiked: req.auth.userId,
-                },
-              },
-              {
-                new: true,
-                upsert: true,
-                setDefaultsOnInsert: true,
-              }
-            )
-              .then((commentUpdated) =>
-                res
-                  .status(200)
-                  .json(hateoasLinks(req,commentUpdated,commentUpdated._id))
-              )
-              .catch((error) =>
-                res.status(400).json({
-                  error,
-                })
-              );
-          } else {
-            res.status(200).json({
-              message: "User has already liked this comment",
-            });
-          }
-          break;
-        case 0:
-          if (commentFound.usersLiked.includes(req.auth.userId)) {
-            Comment.findByIdAndUpdate(
-              {
-                _id: req.params.id,
-              },
-              {
-                $inc: {
-                  likes: -1,
-                },
-                $pull: {
-                  usersLiked: req.auth.userId,
-                },
-              },
-              {
-                new: true,
-                upsert: true,
-                setDefaultsOnInsert: true,
-              }
-            )
-              .then((commentUpdated) =>
-                res
-                  .status(200)
-                  .json(hateoasLinks(req,commentUpdated,commentUpdated._id))
-              )
-              .catch((error) =>
-                res.status(400).json({
-                  error,
-                })
-              );
-          } else {
-            res.status(200).json({
-              message: "User's like is already reset",
-            });
-          }
-          break;
-      }
-    })
-    .catch((error) =>
-      res.status(404).json({
-        error,
-      })
-    );
-};
 
 /*****************************************************************
  *****************       UPDATE COMMENT       ********************
@@ -232,31 +116,13 @@ exports.deleteComment = (req, res, next) => {
 /*****************************************************************
  *****************       HATEOAS FOR COMMENT     *****************
  *****************************************************************/
-const hateoasLinks = (req, id) => {
+const hateoasLinks = (req,comment, id) => {
   const URI = `${req.protocol}://${req.get("host") + "/api/comments/"}`;
   const hateoas= [
-    {
-      rel: "readOne",
-      title: "ReadOne",
-      href: URI + id,
-      method: "GET",
-    },
-    {
-      rel: "readAll",
-      title: "ReadAll",
-      href: URI,
-      method: "GET",
-    },
     {
       rel: "create",
       title: "Create",
       href: URI,
-      method: "POST",
-    },
-    {
-      rel: "like",
-      title: "Like",
-      href: URI + id + "/like",
       method: "POST",
     },
     {
@@ -270,13 +136,7 @@ const hateoasLinks = (req, id) => {
       title: "Delete",
       href: URI + id,
       method: "DELETE",
-    },
-    {
-      rel: "report",
-      title: "Report",
-      href: URI + id + "/report",
-      method: "POST",
-    },
+    }
   ];
   return{
     ...comment.toObject(),
