@@ -47,6 +47,8 @@ exports.signup = (req, res, next) => {
       const user = new User({
         email: encrypt(req.body.email), // EncrypString the email
         password: hash,
+        username: req.body.username,
+        isAdmin: req.body.isAdmin,
       });
       console.log(user.email);
       user
@@ -78,20 +80,77 @@ exports.login = (req, res, next) => {
           if (!valid) {
             return res.status(401).json({ message: "Incorrect password !" }); // Error Unauthorized
           }
-          const userSend = hateoasLinks(req, user);
+          const userSend = hateoasLinks(req, user,user._id);
+
+          // Acces token 
+          const accessToken = jwt.sign(
+            { userId: user._id },
+            process.env.TOKEN_SECRET,
+            { expiresIn: "12h" }
+          );
+
+          // Refresh token
+          const refreshToken = jwt.sign(
+            {
+              userId: user._id,
+            },
+            process.env.REFRESH_TOKEN_SECRET,
+            {
+              expiresIn: "24h",
+            }
+          );
+          
+          res.cookie("jwt", refreshToken, {
+            httpOnly: true, 
+            sameSite: "None", 
+            maxAge: 1000 * 60 * 60 * 24,
+          });
 
           res.status(200).json({
             // Request ok
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET, {
-              expiresIn: "24h",
-            }),
+            token:accessToken,
+            refreshToken: refreshToken,
             userSend,
           });
         })
         .catch((error) => res.status(500).json({ error })); // Internal Error Server
     })
     .catch((error) => res.status(500).json({ error })); // Internal Error Server
+};
+
+/*****************************************************************
+ *****************     REFRESH TOKEN           *******************
+ *****************************************************************/
+exports.refresh = (req, res, next) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+  const refreshToken = cookies.jwt;
+
+  //verifying refreshtoken
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN,
+    async (error, decoded) => {
+      if (error) return res.status(403).json({ message: "Unauthorized" });
+
+      const foundUser = await User.findOne({
+        userId: decoded.userId,
+      }).exec();
+
+      if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
+
+      const accessToken = jwt.sign(
+        { userId: foundUser._id },
+        process.env.TOKEN_SECRET,
+        {
+          expiresIn: "30m",
+        }
+      );
+      res.json({ accessToken });
+    }
+  );
 };
 
 /*****************************************************************
@@ -107,7 +166,7 @@ exports.logout = (req, res, next) => {
       });
       res.redirect("/");
       res.status(200).json({
-        message: "user logged out successfully",
+        message: "user logged out",
       });
     })
     .catch((error) => res.status(404).json(error));
@@ -133,22 +192,23 @@ exports.readUser = (req, res, next) => {
  *****************    READ ONE USER           ********************
  *****************************************************************/
 
- exports.readOneUser = (req, res, next) => {
+exports.readOneUser = (req, res, next) => {
   User.findById(req.auth.userId)
-      .then((user) => {
-          if (!user) {
-              res.status(404).json({
-                  error: "User not found!"
-              });
-          } else {
-              user.email = decryptMail(user.email);
-              user.avatarUrl = `${req.protocol}://${req.get("host")}${user.avatarUrl}`;
-              res.status(200).json(user,
-                  hateoasLinks(req,user,user._id));
-          }
-      })
-      .catch((error) => res.status(404).json(error));
-}
+    .then((user) => {
+      if (!user) {
+        res.status(404).json({
+          error: "User not found!",
+        });
+      } else {
+        user.email = decryptMail(user.email);
+        user.avatarUrl = `${req.protocol}://${req.get("host")}${
+          user.avatarUrl
+        }`;
+        res.status(200).json(user, hateoasLinks(req, user, user._id));
+      }
+    })
+    .catch((error) => res.status(404).json(error));
+};
 
 /*****************************************************************
  *****************  EXPORT THE USER DATA     *********************
@@ -190,9 +250,24 @@ exports.updateUser = (req, res, next) => {
           const hash = await bcrypt.hash(req.body.password, 10);
           update.password = hash;
         }
+        // Check image
+        const userObject = req.file ? {
+          ...update,
+          imageUrl: `/images/${req.file.filename}`
+        } : {
+          ...update
+        };
+        const filename = user.imageUrl.split("/images/")[1];
+        try {
+          if (userObject.imageUrl) {
+            fs.unlinkSync(`images/${filename}`);
+          }
+        } catch (error) {
+          console.log(error);
+        }
         // Update user new info in database
-        User.findByIdAndUpdate({ _id: req.auth.userId }, update).then(
-          (userUpdate) => {
+        User.findByIdAndUpdate({ _id: req.auth.userId }, update)
+        .then((userUpdate) => {
             userUpdate.email = decrypt(userUpdate.email);
             res.status(200).json(hateoasLinks(req, userUpdate, userUpdate._id)); // Request ok
           }
@@ -235,18 +310,24 @@ const hateoasLinks = (req, user) => {
     {
       rel: "signup",
       title: "Signup",
-      href: URI + "/signup",
+      href: URI + "signup",
       method: "POST",
     },
     {
       rel: "login",
       title: "Login",
-      href: URI + "/login",
+      href: URI + "login",
       method: "POST",
     },
     {
       rel: "read",
       title: "Read",
+      href: URI,
+      method: "GET",
+    },
+    {
+      rel: "readOneUser",
+      title: "ReadOneUser",
       href: URI,
       method: "GET",
     },

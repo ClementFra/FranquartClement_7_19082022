@@ -4,6 +4,7 @@ const userCtrl = require("../controllers/user");
 const auth = require('../middleware/auth');
 const pswd = require("../middleware/password");
 const rateLter = require("../middleware/rate-limiter");
+const multer = require('../middleware/multer-config')
 
 
 // Router post
@@ -19,7 +20,7 @@ router.get('/export', auth, userCtrl.exportUser);
 
 // Router put
 
-router.put('/', auth, userCtrl.updateUser);
+router.put('/', auth,multer, userCtrl.updateUser);
 
 // Router delete
 

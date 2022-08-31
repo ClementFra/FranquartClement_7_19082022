@@ -5,6 +5,7 @@ const app = express();
 require("./app/config/db.config");
 require("dotenv").config();
 const router = require("./app/routes/index");
+const cookieParser = require('cookie-parser');
 const path= require("path");
 
 // Settings cors
@@ -32,6 +33,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api", router);
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Security
 
