@@ -25,7 +25,7 @@ exports.readPost = (req, res, next) => {
           );
       }
 
-      res.status(200).json(hateoasLinks(req, post, post._id));
+      res.status(200).json(hateoasLinks(req, post));
     })
     .catch((error) =>
       res.status(404).json({
@@ -114,7 +114,7 @@ exports.updatePost = (req, res, next) => {
         }
       )
         .then((updatePost) => {
-          res.status(200).json(hateoasLinks(req, updatePost, updatePost._id));
+          res.status(200).json(hateoasLinks(req, updatePost));
         }) // Request ok
         .catch((error) => res.status(400).json({ error })); // Error bad request
     }
@@ -130,14 +130,18 @@ exports.deletePost = (req, res, next) => {
       const userId = decodedToken.userId;
       const isAdmin = decodedToken.isAdmin;
       if (post.userId !== userId && !isAdmin) {
-        return res.status(403).json({ message: "non-authorization !" }); // If the user is not the creator => unauthorized message
+        return res.status(403).json({ message: "Unthorized !" }); // If the user is not the creator => unauthorized message
       }
       const filename = post.imageUrl.split("/images/")[1];
       // Delete
       fs.unlink(`images/${filename}`, () => {
         Post.deleteOne({ _id: req.params.id })
+        .then(()=>{
+          Comment.deleteMany({ postId: req.params.id })
           .then(() => res.status(204).send()) // No content
           .catch((error) => res.status(400).json({ error })); // Error bad request
+        })
+        .catch((error) => res.status(400).json({ error })); 
       });
     });
 };
@@ -166,7 +170,7 @@ exports.likePost = (req, res, next) => {
               .then((postUpdated) => {
                 res
                   .status(200)
-                  .json(hateoasLinks(req, postUpdated, postUpdated._id));
+                  .json(hateoasLinks(req, postUpdated));
               })
               .catch((error) => res.status(400).json({ error }));
           } else {
@@ -189,7 +193,7 @@ exports.likePost = (req, res, next) => {
               .then((postUpdated) => {
                 res
                   .status(200)
-                  .json(hateoasLinks(req, postUpdated, postUpdated._id));
+                  .json(hateoasLinks(req, postUpdated));
               })
               .catch((error) => res.status(400).json({ error }));
           } else {
@@ -218,7 +222,7 @@ const hateoasLinks = (req, post, id) => {
     {
       rel: "readSingle",
       title: "ReadSingle",
-      href: URI + post.id,
+      href: URI + post._id,
       method: "GET",
     },
     {
@@ -236,19 +240,19 @@ const hateoasLinks = (req, post, id) => {
     {
       rel: "likePost",
       title: "likePost",
-      href: URI + id + "/like",
+      href: URI + postUpdated._id + "/like",
       method: "POST",
     },
     {
       rel: "update",
       title: "update",
-      href: URI + id,
+      href: URI + updatePost._id,
       method: "PUT",
     },
     {
       rel: "delete",
       title: "delete",
-      href: URI + id,
+      href: URI + post.id,
       method: "DELETE",
     },
   ];
