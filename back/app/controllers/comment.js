@@ -8,7 +8,7 @@ const Comment = require("../models/comment");
 exports.createComment = (req, res, next) => {
   const comment = new Comment({
     userId: req.auth.userId,
-    message: req.post.message,
+    message: req.body.message,
     postId: req.post.postId,
   });
   comment
@@ -66,7 +66,7 @@ exports.updateComment = (req, res, next) => {
       .then((commentUpdated) =>
         res
           .status(200)
-          .json(hateoasLinks(req, commentUpdated, commentUpdated._id))
+          .json(hateoasLinks(req, commentUpdated))
       )
       .catch((error) => res.status(400).json(error));
   });
@@ -86,7 +86,7 @@ exports.deleteComment = (req, res, next) => {
         const userId = decodedToken.userId;
         const isAdmin = decodedToken.isAdmin;
         if (comment.userId !== userId && !isAdmin) {
-          res.status(403).json({ message: "Unauthorized request" });
+          res.status(403).json({ message: "Unauthorized" });
         }
         return res.status(204).json();
       })
@@ -109,7 +109,7 @@ const hateoasLinks = (req, comment, id) => {
     {
       rel: "update",
       title: "Update",
-      href: URI + id,
+      href: URI + commentUpdated._id,
       method: "PUT",
     },
     {
