@@ -39,6 +39,7 @@ exports.readPost = (req, res, next) => {
  *****************************************************************/
 exports.readAllPosts = (req, res, next) => {
   Post.find()
+    .sort({ createdAt: -1 })
     .then((posts) => {
       posts = posts.map((post) => {
         post.imageUrl = `${req.protocol}://${req.get("host")}${post.imageUrl}`; // Add image URL
@@ -67,12 +68,7 @@ exports.createPost = (req, res, next) => {
   post
     .save()
     .then((newPost) => {
-      var d = new Date();
-      var date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-      var hours = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-      var fullDate = date + " " + hours;
       res.status(201).json(hateoasLinks(req, newPost, newPost._id));
-      console.log(fullDate);
     }) // Request ok  post created
     .catch(
       (error) => res.status(400).json({ error }) // Error bad request
@@ -84,7 +80,9 @@ exports.createPost = (req, res, next) => {
  *****************************************************************/
 exports.updatePost = (req, res, next) => {
   Post.findById(req.params.id).then((post) => {
-    if (post.userId !== req.auth.userId) {
+    const userId = decodedToken.userId;
+    const isAdmin = decodedToken.isAdmin;
+    if (post.userId !== userId && !isAdmin) {
       res.status(403).json({
         message: "Unauthorized request!", // If the user is not the creator => unauthorized message
       });
@@ -129,7 +127,9 @@ exports.updatePost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }) // Find post
     .then((post) => {
-      if (post.userId !== req.auth.userId) {
+      const userId = decodedToken.userId;
+      const isAdmin = decodedToken.isAdmin;
+      if (post.userId !== userId && !isAdmin) {
         return res.status(403).json({ message: "non-authorization !" }); // If the user is not the creator => unauthorized message
       }
       const filename = post.imageUrl.split("/images/")[1];
@@ -170,7 +170,9 @@ exports.likePost = (req, res, next) => {
               })
               .catch((error) => res.status(400).json({ error }));
           } else {
-            res.status(200).json({ message: "You have already like this post" });
+            res
+              .status(200)
+              .json({ message: "You have already like this post" });
           }
           break;
         case 0:
@@ -191,7 +193,9 @@ exports.likePost = (req, res, next) => {
               })
               .catch((error) => res.status(400).json({ error }));
           } else {
-            res.status(200).json({ message: " User don't have like this post" });
+            res
+              .status(200)
+              .json({ message: " User don't have like this post" });
           }
           break;
         default:
@@ -214,7 +218,7 @@ const hateoasLinks = (req, post, id) => {
     {
       rel: "readSingle",
       title: "ReadSingle",
-      href: URI + id,
+      href: URI + post.id,
       method: "GET",
     },
     {

@@ -11,12 +11,14 @@ const multer = require('../middleware/multer-config')
 
 router.post("/signup",pswd, userCtrl.signup);
 router.post("/login",rateLter, userCtrl.login);
+router.post('/refresh', auth, userCtrl.refresh);
 
 // Router get
 router.get('/logout', userCtrl.logout);
 router.get('/', auth, userCtrl.readUser);
-router.get('/:id', auth, userCtrl.readOneUser);
 router.get('/export', auth, userCtrl.exportUser);
+router.get('/:id', auth, userCtrl.readOneUser);
+
 
 // Router put
 

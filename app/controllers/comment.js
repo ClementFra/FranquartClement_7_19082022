@@ -8,8 +8,8 @@ const Comment = require("../models/comment");
 exports.createComment = (req, res, next) => {
   const comment = new Comment({
     userId: req.auth.userId,
-    message: req.body.message,
-    postId: req.body.postId,
+    message: req.post.message,
+    postId: req.post.postId,
   });
   comment
     .save()
@@ -28,25 +28,26 @@ exports.createComment = (req, res, next) => {
         }
       )
         .then(() =>
-          res.status(201).json(hateoasLinks(req,newComment,newComment._id))
+          res.status(201).json(hateoasLinks(req, newComment, newComment._id))
         )
         .catch((error) => res.status(400).json(error));
     })
     .catch((error) => res.status(400).json(error));
 };
 
-
 /*****************************************************************
  *****************       UPDATE COMMENT       ********************
  *****************************************************************/
 exports.updateComment = (req, res, next) => {
   Comment.findById(req.params.id).then((comment) => {
+    const userId = decodedToken.userId;
+    const isAdmin = decodedToken.isAdmin;
     if (!comment) {
       return res.status(404).json({
         error: "No comment !",
       });
     }
-    if (comment.userId !== req.auth.userId) {
+    if (comment.userId !== userId && !isAdmin) {
       return res.status(403).json({
         error: "Unauthorized !",
       });
@@ -65,7 +66,7 @@ exports.updateComment = (req, res, next) => {
       .then((commentUpdated) =>
         res
           .status(200)
-          .json(hateoasLinks(req,commentUpdated,commentUpdated._id))
+          .json(hateoasLinks(req, commentUpdated, commentUpdated._id))
       )
       .catch((error) => res.status(400).json(error));
   });
@@ -75,50 +76,30 @@ exports.updateComment = (req, res, next) => {
  *****************       DELETE COMMENT       ********************
  *****************************************************************/
 exports.deleteComment = (req, res, next) => {
-  Post.findOne({
-    comments: req.params.id,
-  })
-    .then((postFound) => {
-      if (!postFound) {
-        return res.status(404).json({
-          error: "No post !",
-        });
-      }
-      Post.findOneAndUpdate(
-        { _id: postFound._id },
-        {
-          $pull: {
-            comments: req.params.id,
-          },
-        },
-        {
-          new: true,
+  Post.findOneAndUpdate(
+    { comments: req.params.id },
+    { $pull: { comments: req.params.id } },
+    { new: true, setDefaultsOnInsert: true, updert: true }
+  ).then(() => {
+    Comment.findByIdAndDelete({ _id: req.params.id })
+      .then((comment) => {
+        const userId = decodedToken.userId;
+        const isAdmin = decodedToken.isAdmin;
+        if (comment.userId !== userId && !isAdmin) {
+          res.status(403).json({ message: "Unauthorized request" });
         }
-      )
-        .then(() => {
-          Comment.findByIdAndDelete(req.params.id)
-            .then((comment) => {
-              if (!comment) {
-                return res.status(404).json({error: "No comment !"});
-              }
-              if (comment.userId !== req.auth.userId) {
-                return res.status(403).json({error: "Unauthorized !"});
-              }
-              res.sendStatus(204);
-            })
-            .catch((error) => res.status(400).json(error));
-        })
-        .catch((error) => res.status(400).json(error));
-    })
-    .catch((error) => res.status(400).json(error));
+        return res.status(204).json();
+      })
+      .catch((error) => res.status(400).json(error));
+  });
 };
 
 /*****************************************************************
  *****************       HATEOAS FOR COMMENT     *****************
  *****************************************************************/
-const hateoasLinks = (req,comment, id) => {
+const hateoasLinks = (req, comment, id) => {
   const URI = `${req.protocol}://${req.get("host") + "/api/comments/"}`;
-  const hateoas= [
+  const hateoas = [
     {
       rel: "create",
       title: "Create",
@@ -136,10 +117,10 @@ const hateoasLinks = (req,comment, id) => {
       title: "Delete",
       href: URI + id,
       method: "DELETE",
-    }
+    },
   ];
-  return{
+  return {
     ...comment.toObject(),
-    links:hateoas,
-  }
+    links: hateoas,
+  };
 };

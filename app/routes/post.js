@@ -13,8 +13,9 @@ router.post("/:id/like", auth, postCtrl.likePost);
 
 // Router get
 
-router.get("/:id", auth, postCtrl.readPost);
 router.get("/", auth, postCtrl.readAllPosts);
+router.get("/:id", auth, postCtrl.readPost);
+
 
 // Router put
 

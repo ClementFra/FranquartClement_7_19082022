@@ -66,40 +66,37 @@ exports.signup = (req, res, next) => {
 /*****************************************************************
  *****************     USER LOGING           *********************
  *****************************************************************/
-exports.login = (req, res, next) => {
+ exports.login = (req, res, next) => {
   const encryptedEmail = encrypt(req.body.email);
+
   User.findOne({ email: encryptedEmail })
     .then((user) => {
       if (!user) {
-        return res.status(401).json({ message: "User not found !" }); // Error not found
+        return res.status(401).json({ error: "User not found !" });
       }
       user.email = decrypt(user.email);
       bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {
           if (!valid) {
-            return res.status(401).json({ message: "Incorrect password !" }); // Error Unauthorized
+            return res
+              .status(401)
+              .json({ error: "Your password is incorrect !" });
           }
-          const userSend = hateoasLinks(req, user,user._id);
 
-          // Acces token 
           const accessToken = jwt.sign(
             { userId: user._id },
             process.env.TOKEN_SECRET,
             { expiresIn: "12h" }
           );
 
-          // Refresh token
           const refreshToken = jwt.sign(
-            {
-              userId: user._id,
-            },
-            process.env.REFRESH_TOKEN_SECRET,
-            {
-              expiresIn: "24h",
-            }
+            { userId: user._id },
+            process.env.REFRESH_TOKEN,
+            { expiresIn: "24h" }
           );
-          
+          const userSend = hateoasLinks(req, user, user._id);
+
           res.cookie("jwt", refreshToken, {
             httpOnly: true, 
             sameSite: "None", 
@@ -107,17 +104,20 @@ exports.login = (req, res, next) => {
           });
 
           res.status(200).json({
-            // Request ok
             userId: user._id,
-            token:accessToken,
+            token: accessToken,
             refreshToken: refreshToken,
             userSend,
           });
         })
-        .catch((error) => res.status(500).json({ error })); // Internal Error Server
+        .catch((error) => {
+          const errors = logInErrors(error);
+          res.status(500).send({ errors });
+        });
     })
-    .catch((error) => res.status(500).json({ error })); // Internal Error Server
+    .catch((error) => res.status(500).json(error));
 };
+
 
 /*****************************************************************
  *****************     REFRESH TOKEN           *******************
@@ -182,7 +182,7 @@ exports.readUser = (req, res, next) => {
         res.status(404).json({ message: "User not found!" }); // Error not found
       } else {
         user.email = decrypt(user.email);
-        res.status(200).json(hateoasLinks(req, user, user._id)); // Request ok
+        res.status(200).json(hateoasLinks(req, user)); // Request ok
       }
     })
     .catch((error) => res.status(500).json({ error }));
@@ -193,21 +193,21 @@ exports.readUser = (req, res, next) => {
  *****************************************************************/
 
 exports.readOneUser = (req, res, next) => {
-  User.findById(req.auth.userId)
+  User.findById(req.params.id)
     .then((user) => {
       if (!user) {
         res.status(404).json({
           error: "User not found!",
         });
       } else {
-        user.email = decryptMail(user.email);
+        user.email = decrypt(user.email);
         user.avatarUrl = `${req.protocol}://${req.get("host")}${
           user.avatarUrl
         }`;
-        res.status(200).json(user, hateoasLinks(req, user, user._id));
+        res.status(200).json(hateoasLinks(req, user, user._id));
       }
     })
-    .catch((error) => res.status(404).json(error));
+    .catch((error) => res.status(500).json({ error }));
 };
 
 /*****************************************************************
@@ -308,21 +308,9 @@ const hateoasLinks = (req, user) => {
   const URI = `${req.protocol}://${req.get("host") + "/api/auth/"}`;
   const hateoas = [
     {
-      rel: "signup",
-      title: "Signup",
-      href: URI + "signup",
-      method: "POST",
-    },
-    {
-      rel: "login",
-      title: "Login",
-      href: URI + "login",
-      method: "POST",
-    },
-    {
       rel: "read",
       title: "Read",
-      href: URI,
+      href: URI+ user.id,
       method: "GET",
     },
     {
