@@ -1,7 +1,7 @@
-import login from './login/login'
+import Login from './login/login'
 
 function App() {
-  return <login />
+  return <Login />
 }
 
 export default App;
