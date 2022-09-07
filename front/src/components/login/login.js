@@ -6,8 +6,8 @@ function Login() {
             <h1>Vous connecter</h1>
           </article>
           <form>
-            <label htmlFor="email">Email</label>
-            <label htmlFor="password">Mot de passe</label>
+            <label>Email</label>
+            <label>Mot de passe</label>
           <button>connexion</button>
           <p>
             Pas de compte ?<br />
