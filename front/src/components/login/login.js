@@ -2,7 +2,7 @@ import "./login.css";
 function Login() {
     return (
         <section>
-          <article className="display-title-form">
+          <article>
             <h1>Vous connecter</h1>
           </article>
           <form>
@@ -11,7 +11,7 @@ function Login() {
           <button>connexion</button>
           <p>
             Pas de compte ?<br />
-            <button>S'enregister</button>
+            <button><a href="http://localhost:8080/Register">S'enregister</a></button>
           </p>
           </form>
         </section>
