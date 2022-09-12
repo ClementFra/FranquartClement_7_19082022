@@ -9,20 +9,13 @@ const fs = require("fs");
  *****************************************************************/
 exports.readPost = (req, res, next) => {
   Post.findById(req.params.id)
+  .populate("comments")
     .then((post) => {
       if (req.body.imageUrl) {
         post.imageUrl = `${req.protocol}://${req.get("host")}${post.imageUrl}`;
       }
       if (req.body.comments) {
-        Comment.find({ postId: req.body.postId })
-          .then(() => {
-            res.status(200).json();
-          })
-          .catch((error) =>
-            res.status(400).json({
-              error: error,
-            })
-          );
+        res.status(200).json();
       }
 
       res.status(200).json(hateoasLinks(req, post));
@@ -39,6 +32,7 @@ exports.readPost = (req, res, next) => {
  *****************************************************************/
 exports.readAllPosts = (req, res, next) => {
   Post.find()
+  .populate("comments")
     .sort({ createdAt: -1 })
     .then((posts) => {
       posts = posts.map((post) => {
@@ -71,8 +65,8 @@ exports.createPost = (req, res, next) => {
       res.status(201).json(hateoasLinks(req, newPost, newPost._id));
     }) // Request ok  post created
     .catch(
-      (error) => res.status(400).json({ error }) // Error bad request
-    );
+      (error) => console.log(error)) // Error bad request
+    ;
 };
 
 /*****************************************************************
@@ -80,9 +74,7 @@ exports.createPost = (req, res, next) => {
  *****************************************************************/
 exports.updatePost = (req, res, next) => {
   Post.findById(req.params.id).then((post) => {
-    const userId = decodedToken.userId;
-    const isAdmin = decodedToken.isAdmin;
-    if (post.userId !== userId && !isAdmin) {
+    if (post.userId !== req.auth.userId && !req.auth.isAdmin) {
       res.status(403).json({
         message: "Unauthorized request!", // If the user is not the creator => unauthorized message
       });
@@ -127,14 +119,12 @@ exports.updatePost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }) // Find post
     .then((post) => {
-      const userId = decodedToken.userId;
-      const isAdmin = decodedToken.isAdmin;
-      if (post.userId !== userId && !isAdmin) {
+      if (post.userId !== req.auth.userId && !req.auth.isAdmin) {
         return res.status(403).json({ message: "Unthorized !" }); // If the user is not the creator => unauthorized message
       }
       const filename = post.imageUrl.split("/images/")[1];
       // Delete
-      fs.unlink(`images/${filename}`, () => {
+      fs.unlinkSync(`images/${filename}`, () => {
         Post.deleteOne({ _id: req.params.id })
         .then(()=>{
           Comment.deleteMany({ postId: req.params.id })
@@ -216,7 +206,7 @@ exports.likePost = (req, res, next) => {
 /*****************************************************************
  *****************     HATEOAS FOR POST      *********************
  *****************************************************************/
-const hateoasLinks = (req, post, id) => {
+const hateoasLinks = (req, post) => {
   const URI = `${req.protocol}://${req.get("host") + "/api/posts/"}`;
   const hateoas = [
     {
@@ -240,13 +230,13 @@ const hateoasLinks = (req, post, id) => {
     {
       rel: "likePost",
       title: "likePost",
-      href: URI + postUpdated._id + "/like",
+      href: URI + post._id + "/like",
       method: "POST",
     },
     {
       rel: "update",
       title: "update",
-      href: URI + updatePost._id,
+      href: URI + post._id,
       method: "PUT",
     },
     {

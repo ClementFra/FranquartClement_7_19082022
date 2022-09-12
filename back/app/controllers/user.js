@@ -85,13 +85,13 @@ exports.signup = (req, res, next) => {
           }
 
           const accessToken = jwt.sign(
-            { userId: user._id },
+            { userId: user._id, isAdmin: user.isAdmin },
             process.env.TOKEN_SECRET,
             { expiresIn: "12h" }
           );
 
           const refreshToken = jwt.sign(
-            { userId: user._id },
+            { userId: user._id, isAdmin: user.isAdmin },
             process.env.REFRESH_TOKEN,
             { expiresIn: "24h" }
           );

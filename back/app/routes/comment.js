@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 
 // Router post
 
-router.post("/", auth, commentCtrl.createComment);
+router.post("/:postId", auth, commentCtrl.createComment);
 
 
 // Router put
