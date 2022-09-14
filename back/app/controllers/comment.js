@@ -5,11 +5,11 @@ const Comment = require("../models/comment");
  *****************       CREATE NEW COMMENT      *****************
  *****************************************************************/
 
-exports.createComment = (req, res, next) => {
+ exports.createComment = (req, res, next) => {
   const comment = new Comment({
     userId: req.auth.userId,
     message: req.body.message,
-    postId: req.post.postId,
+    postId: req.params.postId,
   });
   comment
     .save()
@@ -40,14 +40,12 @@ exports.createComment = (req, res, next) => {
  *****************************************************************/
 exports.updateComment = (req, res, next) => {
   Comment.findById(req.params.id).then((comment) => {
-    const userId = decodedToken.userId;
-    const isAdmin = decodedToken.isAdmin;
     if (!comment) {
       return res.status(404).json({
         error: "No comment !",
       });
     }
-    if (comment.userId !== userId && !isAdmin) {
+    if (post.userId !== req.auth.userId && !req.auth.isAdmin) {
       return res.status(403).json({
         error: "Unauthorized !",
       });
@@ -64,9 +62,7 @@ exports.updateComment = (req, res, next) => {
       }
     )
       .then((commentUpdated) =>
-        res
-          .status(200)
-          .json(hateoasLinks(req, commentUpdated))
+        res.status(200).json(hateoasLinks(req, commentUpdated))
       )
       .catch((error) => res.status(400).json(error));
   });
@@ -76,18 +72,16 @@ exports.updateComment = (req, res, next) => {
  *****************       DELETE COMMENT       ********************
  *****************************************************************/
 exports.deleteComment = (req, res, next) => {
-  Post.findOneAndUpdate(
-    { comments: req.params.id },
-    { $pull: { comments: req.params.id } },
-    { new: true, setDefaultsOnInsert: true, updert: true }
-  ).then(() => {
-    Comment.findByIdAndDelete({ _id: req.params.id })
-      .then((comment) => {
-        const userId = decodedToken.userId;
-        const isAdmin = decodedToken.isAdmin;
-        if (comment.userId !== userId && !isAdmin) {
-          res.status(403).json({ message: "Unauthorized" });
-        }
+  Comment.findByIdAndDelete({ _id: req.params.id }).then((comment) => {
+    if (comment.userId !== req.auth.userId && !req.auth.isAdmin) {
+      res.status(403).json({ message: "Unauthorized" });
+    }
+    Post.findOneAndUpdate(
+      { comments: req.params.id },
+      { $pull: { comments: req.params.id } },
+      { new: true, setDefaultsOnInsert: true, updert: true }
+    )
+      .then(() => {
         return res.status(204).json();
       })
       .catch((error) => res.status(400).json(error));
@@ -97,7 +91,7 @@ exports.deleteComment = (req, res, next) => {
 /*****************************************************************
  *****************       HATEOAS FOR COMMENT     *****************
  *****************************************************************/
-const hateoasLinks = (req, comment, id) => {
+const hateoasLinks = (req, comment) => {
   const URI = `${req.protocol}://${req.get("host") + "/api/comments/"}`;
   const hateoas = [
     {
@@ -109,13 +103,13 @@ const hateoasLinks = (req, comment, id) => {
     {
       rel: "update",
       title: "Update",
-      href: URI + commentUpdated._id,
+      href: URI + comment._id,
       method: "PUT",
     },
     {
       rel: "delete",
       title: "Delete",
-      href: URI + id,
+      href: URI + comment._id,
       method: "DELETE",
     },
   ];
