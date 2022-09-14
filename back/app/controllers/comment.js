@@ -5,31 +5,32 @@ const Comment = require("../models/comment");
  *****************       CREATE NEW COMMENT      *****************
  *****************************************************************/
 
-exports.createComment = (req, res, next) => {
-  Post
-    .then((post) => {
-      if (!post) {
-        return res.status(404).json({ message: "Post don't exist" });
-      }
-    })
-    .then((newComments) => {
-      const newComment = {
-        userId: req.auth.userId,
-        message: req.body.message,
-        postId: req.post.postId,
-      };
-      return Post.findByIdAndUpdate(
+ exports.createComment = (req, res, next) => {
+  const comment = new Comment({
+    userId: req.auth.userId,
+    message: req.body.message,
+    postId: req.params.postId,
+  });
+  comment
+    .save()
+    .then((newComment) => {
+      Post.findByIdAndUpdate(
         newComment.postId,
         {
           $push: {
-            comments:{
-              message: newComments
-            }
+            comments: newComment._id,
           },
         },
-        {new: true,upsert: true,setDefaultsOnInsert: true}
+        {
+          new: true,
+          upsert: true,
+          setDefaultsOnInsert: true,
+        }
       )
-      .then(() => res.status(201).json(hateoasLinks(req, newComment)));
+        .then(() =>
+          res.status(201).json(hateoasLinks(req, newComment, newComment._id))
+        )
+        .catch((error) => res.status(400).json(error));
     })
     .catch((error) => res.status(400).json(error));
 };

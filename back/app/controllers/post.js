@@ -9,7 +9,7 @@ const fs = require("fs");
  *****************************************************************/
 exports.readPost = (req, res, next) => {
   Post.findById(req.params.id)
-  .populate("comments")
+    .populate("comments")
     .then((post) => {
       if (req.body.imageUrl) {
         post.imageUrl = `${req.protocol}://${req.get("host")}${post.imageUrl}`;
@@ -32,7 +32,7 @@ exports.readPost = (req, res, next) => {
  *****************************************************************/
 exports.readAllPosts = (req, res, next) => {
   Post.find()
-  .populate("comments")
+    .populate("comments")
     .sort({ createdAt: -1 })
     .then((posts) => {
       posts = posts.map((post) => {
@@ -64,9 +64,7 @@ exports.createPost = (req, res, next) => {
     .then((newPost) => {
       res.status(201).json(hateoasLinks(req, newPost, newPost._id));
     }) // Request ok  post created
-    .catch(
-      (error) => console.log(error)) // Error bad request
-    ;
+    .catch((error) => console.log(error)); // Error bad request
 };
 
 /*****************************************************************
@@ -121,18 +119,23 @@ exports.deletePost = (req, res, next) => {
     .then((post) => {
       if (post.userId !== req.auth.userId && !req.auth.isAdmin) {
         return res.status(403).json({ message: "Unthorized !" }); // If the user is not the creator => unauthorized message
+      } else {
+        const filename = post.imageUrl.split("/images/")[1];
+        // Delete
+        try {
+          if (post.imageUrl) {
+            fs.unlink(`images/${filename}`, () => {
+              Post.deleteOne({ _id: req.params.id }).then(() => {
+                Comment.deleteMany({ postId: req.params.id })
+                  .then(() => res.status(204).send()) // No content
+                  .catch((error) => res.status(400).json({ error })); // Error bad request
+              });
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
-      const filename = post.imageUrl.split("/images/")[1];
-      // Delete
-      fs.unlinkSync(`images/${filename}`, () => {
-        Post.deleteOne({ _id: req.params.id })
-        .then(()=>{
-          Comment.deleteMany({ postId: req.params.id })
-          .then(() => res.status(204).send()) // No content
-          .catch((error) => res.status(400).json({ error })); // Error bad request
-        })
-        .catch((error) => res.status(400).json({ error })); 
-      });
     });
 };
 
@@ -158,9 +161,7 @@ exports.likePost = (req, res, next) => {
               upsert: true,
             })
               .then((postUpdated) => {
-                res
-                  .status(200)
-                  .json(hateoasLinks(req, postUpdated));
+                res.status(200).json(hateoasLinks(req, postUpdated));
               })
               .catch((error) => res.status(400).json({ error }));
           } else {
@@ -181,9 +182,7 @@ exports.likePost = (req, res, next) => {
               upsert: true,
             })
               .then((postUpdated) => {
-                res
-                  .status(200)
-                  .json(hateoasLinks(req, postUpdated));
+                res.status(200).json(hateoasLinks(req, postUpdated));
               })
               .catch((error) => res.status(400).json({ error }));
           } else {
