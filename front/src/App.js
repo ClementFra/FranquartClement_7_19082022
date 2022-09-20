@@ -1,7 +1,7 @@
-import Login from './pages/login/login'
+import Route from './routes/index';
 
 function App() {
-  return <Login />
+  return <Route />
 }
 
 export default App;
