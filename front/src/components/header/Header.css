@@ -1,36 +1,129 @@
 header {
-    position: fixed;
-    width: 100%;
-    height: 55px;
-    border-bottom: 5px solid #FFD7D7;
-    z-index: 10;
-    top: 0;
-    background-color: white;
+  position: fixed;
+  width: 100%;
+  height: 55px;
+  border-bottom: 5px solid #FFD7D7;
+  top: 0;
+  background-color: white;
+}
+
+.logo img{
+  position: fixed;
+  width: 155px;
+  height: 25px;
+  object-fit: cover;
+  margin-left: 1em;
+  margin-top: 0.8em;
+  top: 1px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+a :hover {
+  color: #FD2D01;
+  transition: all 0.3s ease-in-out;
+}
+
+ul {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+  width: 100%;
+}
+
+li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+}
+.logout{
+  margin-left: -40px;
+}
+.loginIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 260px;
+  text-align: center;
+  color: black;
+  outline-style: none;
+  margin-left: auto;
+  padding-right: 2em;
+}
+
+.IconSmallHeader, .IconSmallHeaderLogOut {
+  display: none;
+}
+
+
+
+
+@media screen and (max-width: 600px) {
+
+  h1 {
+    font-size: 1em;
+    padding: 60px;
   }
-  
-  .logo img{
-    position: fixed;
-    width: 155px;
-    height: 25px;
-    object-fit: cover;
-    margin-left: 1em;
-    margin-top: 1em;
-    top: 1px;
+
+  .logo img {
+    position: absolute;
+    clip: rect(0px,30px,200px,0px);
   }
-  
-  .logo {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
   .loginIcon {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 135px;
+    text-align: center;
+    color: black;
+    outline-style: none;
+    margin-left: auto;
+    padding-right: 1em;
+}
+  
+  .IconSmallHeader {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    margin-left: auto;
+    width: 60px;
     text-align: center;
     color: black;
+    outline-style: none;
+    margin-left: auto;
+    padding-right: 2em;
+    z-index: 1000;
   }
+  .logout {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    width: 100%;
+  }
+
+  
+  .IconSmallHeaderLogOut {
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+    align-items: center;
+    text-align: center;
+    color: black;
+    outline-style: none;
+    margin-left: auto;
+    z-index: 1000;
+  }
+  .HideInSmallScreen {
+    display: none;
+  }
+}
+  
