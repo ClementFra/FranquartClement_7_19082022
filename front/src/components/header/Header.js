@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import Logo from "../../images/logo.png";
+import Logo from "../../images/logo-black.png";
 import "./Header.css";
 import {
   faRightToBracket,
@@ -21,9 +21,8 @@ const Header = () => {
                 localStorage.clear();
                 window.location.reload();
               }}
-              to="/"
-            >
-              <li className="HideInSmallScreen">Se déconnecter</li>
+              to="/">
+              <li className="HideInSmallScreen">Deconnexion</li>
               <li className="IconSmallHeaderLogOut">
                 <FontAwesomeIcon
                   className="loginIcon"
@@ -32,28 +31,20 @@ const Header = () => {
               </li>
             </NavLink>
           </ul>
-          <NavLink to="/login">
-            <ul className="Login" >
-              <NavLink to="/register">
-                <li className="HideInSmallScreen">S'inscrire</li>
-                <li className="IconSmallHeader">
-                  <FontAwesomeIcon
-                    title="S'inscrire"
-                    icon={faRightFromBracket}
-                  />
-                </li>
-              </NavLink>
-              <NavLink to="/login">
-                <li className="HideInSmallScreen">Se connecter</li>
-                <li className="IconSmallHeader">
-                  <FontAwesomeIcon
-                    title="Se connecter"
-                    icon={faRightToBracket}
-                  />
-                </li>
-              </NavLink>
-            </ul>
-          </NavLink>
+          <ul className="Login">
+            <NavLink to="/register">
+              <li className="HideInSmallScreen">S'inscrire</li>
+              <li className="IconSmallHeader">
+                <FontAwesomeIcon title="S'inscrire" icon={faRightFromBracket} />
+              </li>
+            </NavLink>
+            <NavLink to="/login">
+              <li className="HideInSmallScreen">Connexion</li>
+              <li className="IconSmallHeader">
+                <FontAwesomeIcon title="Se connecter" icon={faRightToBracket} />
+              </li>
+            </NavLink>
+          </ul>
         </div>
       </div>
     </header>

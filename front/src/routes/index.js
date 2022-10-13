@@ -16,11 +16,14 @@ const index = () => {
     <Router>
       <Header />
       <Routes>
+        {" "}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profil" element={<Profil />} />
-        <Route path="*" element={<Navigate to="/" />} />{" "}
+        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/logout" element={<Navigate to="/" />} />
+        {" "}
       </Routes>
     </Router>
   );

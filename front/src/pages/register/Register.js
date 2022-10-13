@@ -17,7 +17,7 @@ function Register() {
         <p>
           <b>Déja inscrit ?</b>
           <button>
-            <a href="http://localhost:8080/Login">Se connecter</a>
+            <a href="http://localhost:8080/Login">Connexion</a>
           </button>
         </p>
       </form>
