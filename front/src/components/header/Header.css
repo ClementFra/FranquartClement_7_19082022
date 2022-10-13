@@ -2,12 +2,13 @@ header {
   position: fixed;
   width: 100%;
   height: 55px;
-  border-bottom: 5px solid #FFD7D7;
+  border-bottom: 4px solid #fd2d01;
   top: 0;
-  background-color: white;
+  z-index: 1;
+  background-color: #cccac9;
 }
 
-.logo img{
+.logo img {
   position: fixed;
   width: 155px;
   height: 25px;
@@ -21,10 +22,11 @@ a {
   text-decoration: none;
   color: black;
   font-weight: bold;
+  font-size: 1em;
 }
 
 a :hover {
-  color: #FD2D01;
+  color: #fd2d01;
   transition: all 0.3s ease-in-out;
 }
 
@@ -32,8 +34,6 @@ ul {
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
-  align-items: center;
-  list-style-type: none;
   width: 100%;
 }
 
@@ -43,8 +43,9 @@ li {
   justify-content: space-between;
   align-items: center;
   list-style-type: none;
+  margin-right: 40px;
 }
-.logout{
+.logout {
   margin-left: -40px;
 }
 .loginIcon {
@@ -56,18 +57,15 @@ li {
   color: black;
   outline-style: none;
   margin-left: auto;
-  padding-right: 2em;
+  padding-right: 4em;
 }
 
-.IconSmallHeader, .IconSmallHeaderLogOut {
+.IconSmallHeader,
+.IconSmallHeaderLogOut {
   display: none;
 }
 
-
-
-
 @media screen and (max-width: 600px) {
-
   h1 {
     font-size: 1em;
     padding: 60px;
@@ -75,7 +73,7 @@ li {
 
   .logo img {
     position: absolute;
-    clip: rect(0px,30px,200px,0px);
+    clip: rect(0px, 30px, 200px, 0px);
   }
   .loginIcon {
     display: flex;
@@ -87,8 +85,8 @@ li {
     outline-style: none;
     margin-left: auto;
     padding-right: 1em;
-}
-  
+  }
+
   .IconSmallHeader {
     display: flex;
     justify-content: center;
@@ -110,7 +108,6 @@ li {
     width: 100%;
   }
 
-  
   .IconSmallHeaderLogOut {
     display: flex;
     justify-content: center;
@@ -126,4 +123,3 @@ li {
     display: none;
   }
 }
-  
