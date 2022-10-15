@@ -1,4 +1,7 @@
+//import { useRef, useState, useEffect, useContext } from "react";
+//import { Navigate } from "react-router-dom";
 import "./login.css";
+//import Register from "./Register";
 function Login() {
   return (
     <section>
