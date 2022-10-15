@@ -10,11 +10,6 @@ section {
   border: 4px solid #fd2d01;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.display-title-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 h1 {
   font-size: 1.5em;
 }
