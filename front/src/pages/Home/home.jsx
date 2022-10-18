@@ -14,7 +14,7 @@ const Home = () => {
         <article id="descriptionOfTheSite">
           <h1>Bienvenue sur votre réseau social d'entreprise</h1>
           <p>
-            Bienvenue sur ce nouvelle outil de partage créé pour les employé(e)s
+            Bienvenue sur ce nouvel outil de partage créé pour les employé(e)s
             du Groupe Groupomania. Découvrez toutes les fonctionnalités
             disponibles pour partager vos expériences avec vos collègues. Créez
             un compte et connectez vous pour pouvoir y accéder.
@@ -34,7 +34,7 @@ const Home = () => {
           </li>
           <li className="iconContainer">
             <FontAwesomeIcon icon={faImages} />
-            <p>Ajouter une images à votre message</p>
+            <p>Ajouter une image à votre message</p>
           </li>
         </ul>
       </div>

@@ -13,7 +13,7 @@ function Login() {
         <input></input>
         <label>Mot de passe</label>
         <input></input>
-        <button>connexion</button>
+        <button>connexion</button> 
         <p>
           Pas de compte ?<br />
           <button>

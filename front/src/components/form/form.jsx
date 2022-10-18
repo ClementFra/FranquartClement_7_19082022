@@ -52,16 +52,6 @@ class Register extends React.Component {
             name="username"
           />
         </div>
-        <div>
-          <label htmlFor="admin">L'utilisateur est-il admin</label>
-          <input
-            type="checkbox"
-            checked={this.state.admin}
-            onChange={this.handleChange}
-            id="admin"
-            name="admin"
-          />
-        </div>
       </div>
     );
   }
