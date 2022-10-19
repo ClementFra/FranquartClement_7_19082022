@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Axios from "interceptors/axios";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 function Register() {
   const initialValues={
     "email":"",
@@ -9,6 +9,7 @@ function Register() {
     "secondPassword":"",
   }
   const [values, setValues]= useState(initialValues);
+  const navigate= useNavigate();
 
   function handleInputChange(e){
     const {name,value} = e.target;
@@ -25,7 +26,7 @@ function Register() {
     }
     Axios.post("/auth/signup",user)
     .then(res => {
-      Navigate("/Login")
+      navigate("/Login")
     }) 
     .catch(error =>{
       alert("Profil non créer")
