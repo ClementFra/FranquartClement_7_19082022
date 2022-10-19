@@ -11,6 +11,7 @@ const path= require("path");
 // Settings cors
 var corsOptions = {
   origin: "http://localhost:8080",
+  credentials: true
 };
 
 // Setting
@@ -24,7 +25,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
-  res.setHeader(`Cross-Origin-Ressource-policy`, `same-site`);
+  res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
 
