@@ -24,7 +24,11 @@ form p button {
 a {
   text-decoration: none;
 }
-
+.non-valid{
+  font-size: 0.9em;
+  color: #fd2d01;
+  font-style: italic;
+}
 @media screen and (max-width: 400px) {
   .App-logo {
     display: none;
