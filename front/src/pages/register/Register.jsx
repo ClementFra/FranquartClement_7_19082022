@@ -32,19 +32,19 @@ function Register() {
     let isValid = validate();
 
     if (isValid) {
-      alert("Votre inscription est acceptée");
-      //API call to server
-    } else {
-      alert("Incscription non validée");
-    }
-    console.log(isValid);
-    Axios.post("/auth/signup", user)
+      Axios.post("/auth/signup", user)
       .then((res) => {
         navigate("/Login");
       })
       .catch((error) => {
         console.log(error);
       });
+      //API call to server
+    } else {
+      document.querySelector("#form-error").innerHTML = "Votre formulaire comprend des erreurs.";
+    }
+    console.log(isValid);
+     
   }
 
   // Validator form
@@ -98,8 +98,8 @@ function Register() {
   };
   return (
     <section>
+      <h1>Créer un compte</h1>
       <article>
-        <h1>Créer un compte</h1>
       </article>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email:</label>
@@ -138,12 +138,11 @@ function Register() {
           onChange={handleInputChange}
         />
         <p className="non-valid">{errors.secondPassword}</p>
+        <p id="form-error" className="non-valid"></p>
         <button type="submit">Créer un compte</button>
         <p>
           <b>Déja inscrit ?</b>
-          <button>
             <a href="http://localhost:8080/Login">Connexion</a>
-          </button>
         </p>
       </form>
     </section>
