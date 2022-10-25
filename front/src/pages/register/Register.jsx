@@ -52,7 +52,7 @@ function Register() {
   const validate = () => {
     const errors = {};
     const regexUsername = new RegExp(
-      /^(?=.{4,32}$)(?![.-])(?!.*[.]{2})[a-zA-Z0-9.-]+(?<![.])$/
+      /^(?=.{3,50}$)(?![.-])(?!.*[.]{2})[a-zA-Z0-9.-]+(?<![.])$/
     );
     const regexEmail = new RegExp(
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -73,20 +73,16 @@ function Register() {
     if (values.username === "") {
       errors.username = "Un pseudo est requis !";
     } else if (!regexUsername.test(values.username)) {
-      errors.username = "Le format de votre pseudo est invalide !";
-    } else if (values.username.length < 3) {
-      errors.username = "Votre pseudo doit contenir minimum 3 carractères !";
-    } else if (values.username.length > 50) {
       errors.username =
-        "Votre pseudo doit contenir au maximum 50 carractères !";
+        "Le format de votre pseudo doit contenir 3 carractères minimum et 50 carractères maximum !";
     }
-
     // Errors firstpassword
 
     if (values.firstPassword === "") {
       errors.firstPassword = "Un mot de passe est requis !";
     } else if (!regexPwd.test(values.firstPassword)) {
-      errors.firstPassword = "Le format de votre mot de passe est invalide !";
+      errors.firstPassword =
+        "Le format de votre mot de passe doit contenir 8 carractères avec une Majuscule, Minuscule, carractères alphanumérique et un carractères spécial !";
     }
 
     // Errors secondpassword
