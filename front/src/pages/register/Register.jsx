@@ -49,7 +49,7 @@ function Register() {
 
   // Validator form
 
-  const validate = () => {
+  function validate () {
     const errors = {};
     const regexUsername = new RegExp(
       /^(?=.{3,50}$)(?![.-])(?!.*[.]{2})[a-zA-Z0-9.-]+(?<![.])$/
