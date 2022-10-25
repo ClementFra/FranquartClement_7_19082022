@@ -35,7 +35,7 @@ function Register() {
       alert("Votre inscription est acceptée");
       //API call to server
     } else {
-      alert("Incscription non valide");
+      alert("Incscription non validée");
     }
     console.log(isValid);
     Axios.post("/auth/signup", user)
@@ -43,7 +43,7 @@ function Register() {
         navigate("/Login");
       })
       .catch((error) => {
-        alert("Profil non créer");
+        console.log(error);
       });
   }
 
@@ -110,7 +110,7 @@ function Register() {
           onChange={handleInputChange}
         />
         <p className="non-valid">{errors.firstPassword}</p>
-        <label>Confirmer le mot de passe:</label>
+        <label htmlFor="secondPassword" >Confirmer le mot de passe:</label>
         <input
           type="password"
           id="secondPassword"
