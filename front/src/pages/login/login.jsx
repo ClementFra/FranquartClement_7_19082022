@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Axios from "interceptors/axios";
 import "./login.css";
 //import Auth from "../../contexts/auth";
@@ -29,9 +29,7 @@ function Login() {
   }
   return (
     <section>
-      <article>
-        <h1>Vous connecter</h1>
-      </article>
+      <h1>Vous connecter</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
         <input type="email" id="email" name="email" onChange={handleChange} />
@@ -43,13 +41,11 @@ function Login() {
           onChange={handleChange}
         />
         <button type="submit">connexion</button>
-        <p>
-          Pas de compte ?<br />
-          <button type="submit">
-            <a href="http://localhost:8080/Register">S'enregister</a>
-          </button>
-        </p>
       </form>
+      <p>Pas de compte ?</p>
+      <button className="button-connexion">
+        <Link to="/Register">S'enregistrer</Link>
+      </button>
     </section>
   );
 }

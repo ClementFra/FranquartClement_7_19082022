@@ -2,8 +2,12 @@ body {
   font-family: "Lato", sans-serif;
 }
 section {
-  margin: 250px auto;
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 80px auto;
+  max-width: 350px;
   padding: 10px;
   background-color: white;
   border-radius: 5em;
@@ -28,6 +32,21 @@ a {
   font-size: 0.9em;
   color: #fd2d01;
   font-style: italic;
+}
+.button-connexion{
+  padding: 1em;
+  margin-top: 16px;
+  border: 1px solid black;
+  border-radius: 5em;
+  font-size: 1.2em;
+  color: black;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+}
+.button-connexion:hover {
+  border: 1px solid #fd2d01;
+  background-color: #ffd7d7;
+  color: black;
 }
 @media screen and (max-width: 400px) {
   .App-logo {

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Axios from "interceptors/axios";
-import { useNavigate } from "react-router-dom";
+import validationUtils from "helpers/validationUtils";
+import validationForms from "helpers/validationForms";
+import { Link, useNavigate } from "react-router-dom";
 function Register() {
   const initialValues = {
     email: "",
@@ -12,7 +14,6 @@ function Register() {
   const [values, setValues] = useState(initialValues);
   const [errors, setFormError] = useState({});
   const navigate = useNavigate();
-
   // Function Form
 
   function handleInputChange(e) {
@@ -33,74 +34,31 @@ function Register() {
 
     if (isValid) {
       Axios.post("/auth/signup", user)
-      .then((res) => {
-        navigate("/Login");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((res) => {
+          navigate("/Login");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       //API call to server
     } else {
-      document.querySelector("#form-error").innerHTML = "Votre formulaire comprend des erreurs.";
+      document.querySelector("#form-error").innerHTML =
+        "Votre formulaire comprend des erreurs.";
     }
     console.log(isValid);
-     
   }
 
   // Validator form
 
-  function validate () {
-    const errors = {};
-    const regexUsername = new RegExp(
-      /^(?=.{3,50}$)(?![.-])(?!.*[.]{2})[a-zA-Z0-9.-]+(?<![.])$/
-    );
-    const regexEmail = new RegExp(
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-    );
-    const regexPwd = new RegExp(
-      /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/
-    );
-    // Errors email
-
-    if (values.email === "") {
-      errors.email = "Un email est requis !";
-    } else if (!regexEmail.test(values.email)) {
-      errors.email = "Le format de votre email est invalide !";
-    }
-
-    // Errors username
-
-    if (values.username === "") {
-      errors.username = "Un pseudo est requis !";
-    } else if (!regexUsername.test(values.username)) {
-      errors.username =
-        "Le format de votre pseudo doit contenir 3 carractères minimum et 50 carractères maximum !";
-    }
-    // Errors firstpassword
-
-    if (values.firstPassword === "") {
-      errors.firstPassword = "Un mot de passe est requis !";
-    } else if (!regexPwd.test(values.firstPassword)) {
-      errors.firstPassword =
-        "Le format de votre mot de passe doit contenir 8 carractères avec une Majuscule, Minuscule, carractères alphanumérique et un carractères spécial !";
-    }
-
-    // Errors secondpassword
-
-    if (values.secondPassword === "") {
-      errors.secondPassword = "la confirmation du  mot de passe est requise !";
-    } else if (values.secondPassword !== values.firstPassword) {
-      errors.secondPassword = "Les mots de passe doivent être identiques !";
-    }
-    setFormError({ ...errors });
+  function validate() {
+    
+    setFormError(validationForms,validationUtils);
 
     return Object.keys(errors).length < 1;
-  };
+  }
   return (
     <section>
       <h1>Créer un compte</h1>
-      <article>
-      </article>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email:</label>
         <input
@@ -140,11 +98,11 @@ function Register() {
         <p className="non-valid">{errors.secondPassword}</p>
         <p id="form-error" className="non-valid"></p>
         <button type="submit">Créer un compte</button>
-        <p>
-          <b>Déja inscrit ?</b>
-            <a href="http://localhost:8080/Login">Connexion</a>
-        </p>
+        <p>Déja inscrit ?</p>
       </form>
+      <button className="button-connexion">
+          <Link to="/Login">Connection</Link>
+      </button>
     </section>
   );
 }
