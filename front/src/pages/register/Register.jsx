@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Axios from "interceptors/axios";
-import validationUtils from "helpers/validationUtils";
-import validationForms from "helpers/validationForms";
+import {
+  checkRegister,
+  isTheSame,
+  checkEmail,
+  checkPassword,
+  checkRegisterlength,
+} from "helpers/validationForms";
 import { Link, useNavigate } from "react-router-dom";
 function Register() {
   const initialValues = {
@@ -21,6 +26,10 @@ function Register() {
     setValues({
       ...values,
       [name]: value,
+    });
+    setFormError({
+      ...errors,
+      [name]: "",
     });
   }
 
@@ -51,8 +60,14 @@ function Register() {
   // Validator form
 
   function validate() {
-    
-    setFormError(validationForms,validationUtils);
+    setFormError(
+      checkRegister(values),
+      checkLengh(values),
+      isTheSame(values),
+      checkEmail(values),
+      checkPassword(values),
+      checkRegisterlength(values)
+    );
 
     return Object.keys(errors).length < 1;
   }
@@ -101,7 +116,7 @@ function Register() {
         <p>Déja inscrit ?</p>
       </form>
       <button className="button-connexion">
-          <Link to="/Login">Connection</Link>
+        <Link to="/Login">Connection</Link>
       </button>
     </section>
   );
