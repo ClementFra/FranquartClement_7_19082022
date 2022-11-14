@@ -1,9 +1,27 @@
-import React from "react";
+ import React, { useContext } from 'react';
 
-const Profil = () => {
-  return <div>
-    <h1>Mon Profil</h1>
-    </div>;
-};
+// // Components
+ import Login from '../login/login';
+ import UpdateProfil from '../../components/profil/updateProfil';
 
-export default Profil;
+// // Context
+ import { UidContext } from '../../contexts/appContext';
+
+// // Styles
+ import { Container } from 'react-bootstrap';
+
+ const Profil = () => {
+   const uid = useContext(UidContext);
+
+   return (
+     <Container fluid>
+       {uid ? (
+         <UpdateProfil />
+      ) : (
+        <Login signin={false} signup={true} />
+       )}
+     </Container>
+   )
+ };
+
+ export default Profil;

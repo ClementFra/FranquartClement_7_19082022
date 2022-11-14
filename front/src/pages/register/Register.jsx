@@ -2,7 +2,6 @@ import { useState } from "react";
 import Axios from "interceptors/axios";
 import {
   checkRegister,
-  isTheSame,
   checkEmail,
   checkPassword,
   checkRegisterlength,
@@ -62,8 +61,6 @@ function Register() {
   function validate() {
     setFormError(
       checkRegister(values),
-      checkLengh(values),
-      isTheSame(values),
       checkEmail(values),
       checkPassword(values),
       checkRegisterlength(values)
