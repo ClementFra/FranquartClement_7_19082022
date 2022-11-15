@@ -8,7 +8,7 @@ import { getPosts } from "./components/actions/postActions";
 import { Provider } from "react-redux";
 import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
-import reducer from "./reducers";
+import reducer from "./reducers/store";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor} from "./reducers/store";
