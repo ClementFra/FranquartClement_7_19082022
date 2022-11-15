@@ -6,15 +6,15 @@ import { getUsers } from "./components/actions/usersActions";
 import { getPosts } from "./components/actions/postActions";
 // Redux tools
 import { Provider } from "react-redux";
-import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
+import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import reducer from "./reducers/store";
+import rootReducer from './reducers';
 import { composeWithDevTools } from "redux-devtools-extension";
-import { PersistGate } from "redux-persist/integration/react";
-import { persistor} from "./reducers/store";
+// import { PersistGate } from "redux-persist/integration/react";
+// import { persistor} from "./reducers/store";
 
-const store = configureStore(
-  reducer,
+const store = createStore(
+  rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
 store.dispatch(getUsers());
@@ -23,10 +23,8 @@ store.dispatch(getPosts());
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
+  <Provider store={store}> 
       <App />
-    </PersistGate>
   </Provider>
   </React.StrictMode>
 );
