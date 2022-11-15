@@ -1,4 +1,4 @@
-import { GET_USER, UPDATE_USER, DELETE_USER } from '../actions/userActions';
+import { GET_USER, UPDATE_USER, DELETE_USER } from '../components/actions/userActions';
 
 const initialState = {};
 

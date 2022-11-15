@@ -37,7 +37,7 @@ function Login() {
 
   function validate() {
     setFormError(
-      checkRegister(value),
+      checkRegister(),
     );
 
     return Object.keys(errors).length < 1;

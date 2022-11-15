@@ -14,12 +14,12 @@ export function checkRegister(values) {
 // }
 export function checkEmail(values){
   if((/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(values)){
-    return errors="Vérifier le format de l'email"
+     errors="Vérifier le format de l'email"
   }
 }
 export function checkPassword(values){
-  if((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm).test(values)){
-    return errors="Le mot de passe doit contenir 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre"
+  if((/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/).test(values)){
+     errors="Le mot de passe doit contenir 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre"
   }  
 }
 export function checkRegisterlength(values){

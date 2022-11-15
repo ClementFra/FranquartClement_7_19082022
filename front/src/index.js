@@ -8,10 +8,10 @@ import { getPosts } from "./components/actions/postActions";
 import { Provider } from "react-redux";
 import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
-import reducer from "./components/reducers";
+import reducer from "./reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor} from "./components/reducers/store";
+import { persistor} from "./reducers/store";
 
 const store = configureStore(
   reducer,
