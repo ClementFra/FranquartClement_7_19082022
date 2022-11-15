@@ -1,7 +1,7 @@
 import { checkEmpty, checkLength } from "./validationUtils";
 const errors = {};
 export function checkRegister(values) {
-  values.foreach((values, index) => {
+  values.forEach((values, index) => {
     if (!checkEmpty(values)) {
       errors[index] = "ce champ est vide";
     }
