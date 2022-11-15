@@ -2,7 +2,7 @@ import { combineReducers,configureStore  } from '@reduxjs/toolkit';
 import userReducer from './userReducer';
 import postReducer from './postReducer';
 import usersReducer from './userReducer';
-import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'
+import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 
@@ -13,8 +13,8 @@ export default combineReducers({
 });
 
 const persistConfig = {
-  key: 'root',f,
-  storageSession,
+  key: 'root',
+  storage,
 }
 const persistedReducer = persistReducer(persistConfig, userReducer)
 

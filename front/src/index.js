@@ -11,7 +11,7 @@ import thunk from "redux-thunk";
 import reducer from "./components/reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor} from "./components/reducers";
+import { persistor} from "./components/reducers/store";
 
 const store = configureStore(
   reducer,
