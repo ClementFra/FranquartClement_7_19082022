@@ -6,7 +6,7 @@ import { getUsers } from "./components/actions/usersActions";
 import { getPosts } from "./components/actions/postActions";
 // Redux tools
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
+import {applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from './reducers';
 import { composeWithDevTools } from "redux-devtools-extension";
