@@ -8,25 +8,27 @@ import { getPosts } from "./components/actions/postActions";
 import { Provider } from "react-redux";
 import { configureStore, applyMiddleware } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
-import rootReducer from "./components/reducer";
+import reducer from "./components/reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from "./components/reducer";
+import { persistor} from "./components/reducers";
 
 const store = configureStore(
-  rootReducer,
+  reducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
 store.dispatch(getUsers());
 store.dispatch(getPosts());
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App />
     </PersistGate>
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
