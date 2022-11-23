@@ -1,21 +1,28 @@
+// Immport function validation form
+import { checkLogin } from "helpers/validationLogin";
+
+// Import react 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Axios from "interceptors/axios";
+
+// Import Style
 import "./login.css";
-import {checkRegister} from "helpers/validationForms";
-//import Auth from "../../contexts/auth";
+
+// Import Interceptor
+import Axios from "interceptors/axios";
+
 
 function Login() {
-  const [user, setUser] = useState({
-    username: "",
+  const initialValues = {
+    email: "",
     password: "",
-  });
+  };
+  const [values, setUser] = useState(initialValues);
   const [errors, setFormError] = useState({});
-  //const { isAuthenticated, setIsAuthenticated } = useContext(Auth);
   const navigate = useNavigate();
-  function handleChange(currentTarget) {
-    const { name, value } = currentTarget;
-    setUser({ ...user, [name]: value });
+  function handleChange(e) {
+    const { name, values } = e.target;
+    setUser({ ...values, [name]: values });
     setFormError({
       ...errors,
       [name]: "",
@@ -23,23 +30,27 @@ function Login() {
   }
   function handleSubmit(e) {
     e.preventDefault();
+    const user = {
+      ...values
+    };
     let isValid = validate();
-    if(isValid){
+    if (isValid) {
       Axios.post("/auth/login", user)
-      .then((res) => {
-        navigate("/home");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }else {
+      document.querySelector("#log-error").innerHTML =
+        "La connection comprend une erreur.";
     }
+    console.log(isValid);
   }
 
   function validate() {
-    setFormError(
-      checkRegister(),
-    );
-
+    setFormError(checkLogin(values));
     return Object.keys(errors).length < 1;
   }
 
@@ -60,6 +71,7 @@ function Login() {
         <p className="non-valid">{errors.password}</p>
         <button type="submit">connexion</button>
       </form>
+      <p id="log-error" className="non-valid"></p>
       <p>Pas de compte ?</p>
       <button className="button-connexion">
         <Link to="/Register">S'enregistrer</Link>

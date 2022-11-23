@@ -1,10 +1,7 @@
 import { useState } from "react";
 import Axios from "interceptors/axios";
 import {
-  checkRegister,
-  checkEmail,
-  checkPassword,
-  checkRegisterlength,
+  checkRegister
 } from "helpers/validationForms";
 import { Link, useNavigate } from "react-router-dom";
 function Register() {
@@ -45,7 +42,7 @@ function Register() {
         .then((res) => {
           navigate("/Login");
         })
-        .catch((error) => {
+        .catch((error) => { 
           console.log(error);
         });
       //API call to server
@@ -60,10 +57,7 @@ function Register() {
 
   function validate() {
     setFormError(
-      checkRegister(values),
-      checkEmail(values),
-      checkPassword(values),
-      checkRegisterlength(values)
+      checkRegister(values)
     );
 
     return Object.keys(errors).length < 1;
