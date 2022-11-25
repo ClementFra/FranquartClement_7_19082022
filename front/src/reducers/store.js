@@ -1,11 +1,10 @@
-import { combineReducers } from 'redux';
-import userReducer from './userReducer';
-import postReducer from './postReducer';
-import usersReducer from './userReducer';
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "../reducers/userReducer";
+import postReducer from "../reducers/postReducer";
 
-export default combineReducers({
-  userReducer,
-  usersReducer,
-  postReducer
+export default configureStore({
+  reducer: {
+    user: userReducer,
+    post: postReducer,
+  },
 });
-

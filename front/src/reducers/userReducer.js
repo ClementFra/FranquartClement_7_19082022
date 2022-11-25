@@ -1,22 +1,17 @@
-import { GET_USER, UPDATE_USER, DELETE_USER } from '../components/actions/userActions';
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+export const userSlice = createSlice({
+  name: "user",
+  initialState: {
+    user: null,
+  },
+  reducers: {
+    setUser: (state, { payload }) => {
+      state.user = payload;
+    },
+  },
+});
 
-export default function userReducer(state = initialState, action) {
-  switch (action.type) {
-    case GET_USER:
-      // Get info of user.
-      return {
-        ...state,
-        ...action.payload,
-      };
-    case UPDATE_USER:
-      // Update bio of user.
-      return { ...state, biography: action.payload };
-    case DELETE_USER:
-      // Delete user.
-      return { ...state, ...action.payload };
-    default:
-      return state;
-  }
-}
+export const { setUser } = userSlice.actions;
+export default userSlice.reducer;
+  

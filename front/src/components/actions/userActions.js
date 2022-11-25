@@ -1,95 +1,78 @@
-import axios from 'axios';
+import axios from "axios";
+import { setPosts, setDeletePost, setLikePost, setDislikePost } from "../../reducers/userReducer"
 
-export const GET_USER = 'GET_USER';
-export const UPDATE_USER = 'UPDATE_BIO';
-export const DELETE_USER = 'DELETE_USER';
-export const UPLOAD_PICTURE = 'UPLOAD_PICTURE';
-const REACT_APP_URL="http://localhost:8000/api";
-
-// Récupération des informations d'un utilisateur et de ses likes.
-export const getUser = uid => {
-  const token = JSON.parse(localStorage.getItem('user')).token;
-  return dispatch => {
-    return axios
-      .get(`${process.env.REACT_APP_API_URL}/user/${uid}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-      .then(res => {
-        dispatch({
-          type: GET_USER, payload: {
-            ...res.data.user,
-            ...res.data.likes,
-          }
-        });
-      })
-      .catch(err => err.message);
+const getAllPosts = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("api/post");
+      return dispatch(setPosts(res.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
-// Mise à jour de la biographie d'un utilisateur.
-export const updateBio = (id, biography) => {
-  const token = JSON.parse(localStorage.getItem('user')).token;
-
-  return dispatch => {
-    return axios({
-      method: 'put',
-      url: `${process.env.REACT_APP_API_URL}/api/user/updateUser/${id}`,
-      data: { biography },
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        dispatch({ type: UPDATE_USER, payload: biography });
-      })
-      .catch(err => err.response);
+const createPost = (data) => {
+  return async () => {
+    try {
+      await axios.post("api/post", data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
-
-// Suppression de l'utilisateur.
-export const deleteUser = id => {
-  const token = JSON.parse(localStorage.getItem('user')).token;
-
-  return dispatch => {
-    return axios({
-      method: 'delete',
-      url: `${process.env.REACT_APP_API_URL}/user/${id}`,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
-    })
-      .then(res => {
-        dispatch({ type: DELETE_USER });
-      })
-      .catch(err => err.response);
-  };
-}
-
-export const uploadPicture = (data, id) => {
-  const token = JSON.parse(localStorage.getItem('user')).token;
-
-  return dispatch => {
-    return axios
-      .put(`${process.env.REACT_APP_API_URL}/user/upload/${id}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      })
-      .then(res => {
-        return axios
-          .get(`${process.env.REACT_APP_API_URL}/api/user/${id}`)
-          .then(res => {
-            dispatch({ type: UPLOAD_PICTURE, payload: res.data.user.avatar });
-          })
-          .catch(err => err.message);
-      })
-      .catch(err => err.message);
+const updatePost = (post_id, data) => {
+  return async () => {
+    try {
+      await axios.put(`api/post/${post_id}`, data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
+
+const deletePost = (post_id) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`api/post/delete/${post_id}`);
+      return dispatch(setDeletePost({ post_id }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const createComment = (post_id, content) => {
+  return async () => {
+    try {
+      await axios.post(`api/comment/${post_id}`, { content });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const addLikePost = (post_id, user_id) => {
+  return async (dispatch) => {
+    try {
+      await axios.post(`api/like/${post_id}`, { user_id });
+      return dispatch(setLikePost({ post_id, user_id }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const removeLikePost = (post_id, user_id) => {
+  return async (dispatch) => {
+    try {
+      await axios.post(`api/like/${post_id}`, { user_id });
+      return dispatch(setDislikePost({ post_id, user_id }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export { getAllPosts, createPost, updatePost, deletePost, createComment, addLikePost, removeLikePost };
