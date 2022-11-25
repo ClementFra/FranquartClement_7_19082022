@@ -44,7 +44,7 @@ function Login() {
         });
     }else {
       document.querySelector("#log-error").innerHTML =
-        "La connection comprend une erreur.";
+        "La connexion comprend une erreur.";
     }
     console.log(isValid);
   }
