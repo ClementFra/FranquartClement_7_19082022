@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setUser } from "../../reducers/userReducer";
 
-const getUser = (user_id) => {
+const readUser = (user_id) => {
   return async (dispatch) => {
     try {
       const res = await axios.get(`api/user/${user_id}`);
@@ -32,4 +32,4 @@ const deleteUser = (user_id) => {
   };
 };
 
-export { getUser, updateUser, deleteUser };
+export { readUser, updateUser, deleteUser };
