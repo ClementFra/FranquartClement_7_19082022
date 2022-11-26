@@ -1,78 +1,35 @@
 import axios from "axios";
-import { setPosts, setDeletePost, setLikePost, setDislikePost } from "../../reducers/userReducer"
+import { setUser } from "../../reducers/userReducer";
 
-const getAllPosts = () => {
+const getUser = (user_id) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get("api/post");
-      return dispatch(setPosts(res.data));
+      const res = await axios.get(`api/user/${user_id}`);
+      return dispatch(setUser(res.data));
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const createPost = (data) => {
+const updateUser = (user_id, data) => {
   return async () => {
     try {
-      await axios.post("api/post", data);
+      await axios.put(`api/user/${user_id}`, data);
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const updatePost = (post_id, data) => {
+const deleteUser = (user_id) => {
   return async () => {
     try {
-      await axios.put(`api/post/${post_id}`, data);
+      await axios.delete(`api/user/delete/${user_id}`);
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const deletePost = (post_id) => {
-  return async (dispatch) => {
-    try {
-      await axios.delete(`api/post/delete/${post_id}`);
-      return dispatch(setDeletePost({ post_id }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-const createComment = (post_id, content) => {
-  return async () => {
-    try {
-      await axios.post(`api/comment/${post_id}`, { content });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-const addLikePost = (post_id, user_id) => {
-  return async (dispatch) => {
-    try {
-      await axios.post(`api/like/${post_id}`, { user_id });
-      return dispatch(setLikePost({ post_id, user_id }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-const removeLikePost = (post_id, user_id) => {
-  return async (dispatch) => {
-    try {
-      await axios.post(`api/like/${post_id}`, { user_id });
-      return dispatch(setDislikePost({ post_id, user_id }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export { getAllPosts, createPost, updatePost, deletePost, createComment, addLikePost, removeLikePost };
+export { getUser, updateUser, deleteUser };
