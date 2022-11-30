@@ -4,6 +4,7 @@ import { checkLogin } from "helpers/validationLogin";
 // Import react 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // Import Style
 import "./login.css";
@@ -13,6 +14,7 @@ import Axios from "interceptors/axios";
 
 
 function Login() {
+  const dispatch= useDispatch();
   const initialValues = {
     email: "",
     password: "",
@@ -21,8 +23,8 @@ function Login() {
   const [errors, setFormError] = useState({});
   const navigate = useNavigate();
   function handleChange(e) {
-    const { name, values } = e.target;
-    setUser({ ...values, [name]: values });
+    const { name, value } = e.target;
+    setUser({ ...values, [name]: value });
     setFormError({
       ...errors,
       [name]: "",
@@ -37,6 +39,7 @@ function Login() {
     if (isValid) {
       Axios.post("/auth/login", user)
         .then((res) => {
+          dispatch(setUser(res.data));
           navigate("/");
         })
         .catch((error) => {

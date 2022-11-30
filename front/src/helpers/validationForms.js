@@ -7,9 +7,10 @@ export function checkRegister(values) {
     const value = values[index];
     if (validator.isEmpty(value)) {
       errors[index] = "Ce champ ne peut pas être vide.";
-    } else if (!validator.isEmail(values.email)) {
-      errors["email"] = "L'email est invalide.";
     }
+  }
+  if (!validator.isEmail(values.email)) {
+    errors["email"] = "L'email est invalide.";
   }
   if (!isTheSame(values.firstPassword, values.secondPassword)) {
     errors["secondPassword"] =
