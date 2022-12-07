@@ -4,18 +4,8 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from "redux-persist/lib/storage";
-import allReducers from "./reducers/store";
-import { configureStore } from '@reduxjs/toolkit'
+import { store, persistor } from "./reducers/store";
 
-const persistConfig = {
-  key: "root",
-  storage,
-};
-const persistedReducer = persistReducer(persistConfig, allReducers);
-let store = configureStore(persistedReducer);
-const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

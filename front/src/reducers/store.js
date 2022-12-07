@@ -1,18 +1,23 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import thunkMiddleware from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import userReducer from "../reducers/userReducer";
-import postReducer from "../reducers/postReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./userReducer";
+import thunk from "redux-thunk";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { combineReducers } from "redux";
 
-const applyMiddleware = require("redux").applyMiddleware;
-const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
-
-const allReducers = combineReducers({
+const persistConfig = {
+  key: "root",
+  storage,
+};
+const reducer = combineReducers({
   user: userReducer,
-  post: postReducer,
-  composedEnhancer,
 });
-const store = configureStore({
-  reducer: allReducers,
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== "production",
+  middleware: [thunk],
 });
-export default store;
+
+export const persistor = persistStore(store);

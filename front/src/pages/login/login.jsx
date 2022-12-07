@@ -1,7 +1,7 @@
 // Immport function validation form
 import { checkLogin } from "helpers/validationLogin";
 
-// Import react 
+// Import react
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -11,20 +11,20 @@ import "./login.css";
 
 // Import Interceptor
 import Axios from "interceptors/axios";
-
+import { setUser } from "reducers/userReducer";
 
 function Login() {
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
   const initialValues = {
     email: "",
     password: "",
   };
-  const [values, setUser] = useState(initialValues);
+  const [values, setValues] = useState(initialValues);
   const [errors, setFormError] = useState({});
   const navigate = useNavigate();
   function handleChange(e) {
     const { name, value } = e.target;
-    setUser({ ...values, [name]: value });
+    setValues({ ...values, [name]: value });
     setFormError({
       ...errors,
       [name]: "",
@@ -33,7 +33,7 @@ function Login() {
   function handleSubmit(e) {
     e.preventDefault();
     const user = {
-      ...values
+      ...values,
     };
     let isValid = validate();
     if (isValid) {
@@ -45,11 +45,10 @@ function Login() {
         .catch((error) => {
           console.log(error);
         });
-    }else {
+    } else {
       document.querySelector("#log-error").innerHTML =
         "La connexion comprend une erreur.";
     }
-    console.log(isValid);
   }
 
   function validate() {

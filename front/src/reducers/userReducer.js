@@ -8,11 +8,10 @@ export const userSlice = createSlice({
     refreshToken: null
   },
   reducers: {
-    setUser: (state, { payload }) => {
-      console.log(payload)
-      state.user = payload;
-      state.accessToken = payload;
-      state.refreshToken = payload;
+    setUser: (state,actions ) => {
+       state.user = actions.payload.userSend;
+       state.accessToken = actions.payload.token;
+       state.refreshToken = actions.payload.refreshToken;
     },
   },
 });
