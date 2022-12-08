@@ -16,7 +16,7 @@ const Logout = () => {
   };
 
   const logout = async () => {
-    Axios.get("/auth/logout")
+    Axios.get("/user/logout")
       .then((res) => {
         dispatch(Logout);
         removeCookie("jwt");

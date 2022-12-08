@@ -25,7 +25,7 @@ import { UidContext } from "contexts/appContext";
 
 
 const Header = () => {
-  // If uid exist the home change
+  // If uid exist the home
   const uid = useContext(UidContext);
   const userData = useSelector((state) => state.userReducer);
 
@@ -42,8 +42,8 @@ const Header = () => {
         </NavLink>
         <div className="loginIcon">
           {uid ? (
-            <ul>
-              <li className="welcom-user">
+            <ul className="welcom-user">
+              <li >
                 <NavLink to="/profil">
                   <h5>Bienvenue {userData.username}</h5>
                 </NavLink>
@@ -67,7 +67,7 @@ const Header = () => {
                 <li className="HideInSmallScreen">Connexion</li>
                 <li className="IconSmallHeader">
                   <FontAwesomeIcon
-                    title="Se connecter"
+                    title="Connexion"
                     icon={faRightToBracket}
                   />
                 </li>
