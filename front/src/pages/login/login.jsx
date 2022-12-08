@@ -1,15 +1,23 @@
-// Immport function validation form
+/*****************************************************************
+ *****************       IMPORT VALIDATION FORM   ****************
+ *****************************************************************/
 import { checkLogin } from "helpers/validationLogin";
 
-// Import react
+/*****************************************************************
+ *****************       IMPORT REACT     ************************
+ *****************************************************************/
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-// Import Style
+/*****************************************************************
+ *****************       IMPORT STYLE    *************************
+ *****************************************************************/
 import "./login.css";
 
-// Import Interceptor
+/*****************************************************************
+ *****************       IMPORT INTERCEPTOR    *******************
+ *****************************************************************/
 import Axios from "interceptors/axios";
 import { setUser } from "reducers/userReducer";
 

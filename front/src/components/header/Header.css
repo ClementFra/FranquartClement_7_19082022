@@ -99,7 +99,7 @@ li {
     padding-right: 2em;
     z-index: 1000;
   }
-  .logout {
+  .welcom-user {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
