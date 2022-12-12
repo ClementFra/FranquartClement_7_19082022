@@ -1,31 +1,22 @@
 import React from "react";
-import cookie from "js-cookie";
 import Axios from "../../interceptors/axios";
 import { useDispatch } from "react-redux";
-
+import { logout } from "reducers/userReducer";
 // Styles
 import { Nav } from "react-bootstrap";
 
 const Logout = () => {
   // Remove Cookie
   const dispatch = useDispatch();
-  const removeCookie = (key) => {
-    if (window !== "undefined") {
-      cookie.remove(key, { expires: 1 });
-    }
-  };
 
-  const logout = async () => {
-    Axios.get("/user/logout")
+  const userLogout = async () => {
+    Axios.get("/auth/logout")
       .then((res) => {
-        dispatch(Logout);
-        removeCookie("jwt");
+        dispatch(logout());
       })
       .catch((error) => {
         console.log(error);
       });
-
-    window.location = "/";
   };
 
   return (
@@ -33,7 +24,7 @@ const Logout = () => {
       <Nav>
         <Nav.Item>
           <Nav.Link>
-            <h5 onClick={logout}>Déconnexion</h5>
+            <h5 onClick={userLogout}>Déconnexion</h5>
           </Nav.Link>
         </Nav.Item>
       </Nav>

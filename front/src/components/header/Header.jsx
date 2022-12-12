@@ -1,7 +1,7 @@
 /*****************************************************************
  *****************       IMPORT REACT     ************************
  *****************************************************************/
-import React, { useContext } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,15 +20,11 @@ import {
  *********************        IMPORT    **************************
  *****************************************************************/
 import Logout from "pages/login/logout";
-import { UidContext } from "contexts/appContext";
-
-
 
 const Header = () => {
   // If uid exist the home
-  const uid = useContext(UidContext);
-  const userData = useSelector((state) => state.userReducer);
-
+  const userData = useSelector((state) => state.user.user);
+  console.log(userData);
   return (
     <header>
       <div className="logo">
@@ -41,16 +37,16 @@ const Header = () => {
           />
         </NavLink>
         <div className="loginIcon">
-          {uid ? (
+          {userData ? (
             <ul className="welcom-user">
-              <li >
+              <li>
                 <NavLink to="/profil">
                   <h5>Bienvenue {userData.username}</h5>
                 </NavLink>
               </li>
-              <NavLink>
-                <Logout/>
-              </NavLink>
+              <li>
+                <Logout />
+              </li>
             </ul>
           ) : (
             <ul className="Login">
@@ -66,10 +62,7 @@ const Header = () => {
               <NavLink to="/login">
                 <li className="HideInSmallScreen">Connexion</li>
                 <li className="IconSmallHeader">
-                  <FontAwesomeIcon
-                    title="Connexion"
-                    icon={faRightToBracket}
-                  />
+                  <FontAwesomeIcon title="Connexion" icon={faRightToBracket} />
                 </li>
               </NavLink>
             </ul>

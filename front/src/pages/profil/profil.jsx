@@ -1,27 +1,24 @@
- import React, { useContext } from 'react';
+//  import React, { useContext } from 'react';
 
-// // Components
- import Login from '../login/login';
- import UpdateProfil from '../../components/profil/updateProfil';
+// // // Components
+//  import Login from '../login/login';
+//  import UpdateProfil from '../../components/profil/updateProfil';
 
-// // Context
- import { UidContext } from '../../contexts/appContext';
+// // // Context
 
-// // Styles
- import { Container } from 'react-bootstrap';
+// // // Styles
+//  import { Container } from 'react-bootstrap';
 
- const Profil = () => {
-   const uid = useContext(UidContext);
+// //  const Profil = () => {
+// //    return (
+// //      <Container fluid>
+// //        {uid ? (
+// //          <UpdateProfil />
+// //       ) : (
+// //         <Login signin={false} signup={true} />
+// //        )}
+// //      </Container>
+// //    )
+// //  };
 
-   return (
-     <Container fluid>
-       {uid ? (
-         <UpdateProfil />
-      ) : (
-        <Login signin={false} signup={true} />
-       )}
-     </Container>
-   )
- };
-
- export default Profil;
+// //  export default Profil;
