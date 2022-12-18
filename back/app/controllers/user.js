@@ -133,7 +133,7 @@ exports.refresh = (req, res, next) => {
     refreshToken,
     process.env.REFRESH_TOKEN,
     async (error, decoded) => {
-      if (error) return res.status(403).json({ message: "Unauthorized" });
+      if (error) return res.status(401).json({ message: "Unauthorized" });
 
       const foundUser = await User.findOne({
         userId: decoded.userId,
@@ -145,7 +145,7 @@ exports.refresh = (req, res, next) => {
         { userId: foundUser._id },
         process.env.TOKEN_SECRET,
         {
-          expiresIn: "30m",
+          expiresIn: DURATION_REFRESH_TOKEN,
         }
       );
       res.json({ accessToken });

@@ -4,17 +4,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /*****************************************************************
  *****************       IMPORT STYLE    *************************
  *****************************************************************/
 import "./Header.css";
 import Logo from "../../images/logo-black.png";
-import {
-  faRightToBracket,
-  faRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons";
 
 /*****************************************************************
  *********************        IMPORT    **************************
@@ -26,8 +21,8 @@ const Header = () => {
   const userData = useSelector((state) => state.user.user);
   console.log(userData);
   return (
-    <header>
-      <div className="logo">
+    <body>
+      <header>
         <NavLink to="/">
           <img
             title="logo groupomania"
@@ -36,9 +31,9 @@ const Header = () => {
             alt="logo de groupomania"
           />
         </NavLink>
-        <div className="loginIcon">
+        <main>
           {userData ? (
-            <ul className="welcom-user">
+            <ul id="userLog">
               <li>
                 <NavLink to="/profil">
                   <h5>Bienvenue {userData.username}</h5>
@@ -49,27 +44,18 @@ const Header = () => {
               </li>
             </ul>
           ) : (
-            <ul className="Login">
-              <NavLink to="/register">
-                <li className="HideInSmallScreen">S'inscrire</li>
-                <li className="IconSmallHeader">
-                  <FontAwesomeIcon
-                    title="S'inscrire"
-                    icon={faRightFromBracket}
-                  />
-                </li>
-              </NavLink>
+            <ul>
               <NavLink to="/login">
-                <li className="HideInSmallScreen">Connexion</li>
-                <li className="IconSmallHeader">
-                  <FontAwesomeIcon title="Connexion" icon={faRightToBracket} />
-                </li>
+                <li>Connexion</li>
+              </NavLink>
+              <NavLink to="/register">
+                <li>S'inscrire</li>
               </NavLink>
             </ul>
           )}
-        </div>
-      </div>
-    </header>
+        </main>
+      </header>
+    </body>
   );
 };
 export default Header;

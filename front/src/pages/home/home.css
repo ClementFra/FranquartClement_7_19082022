@@ -1,11 +1,11 @@
-.welcomeMessage {
+#welcomeMessage {
     width: 100vw;
     min-height: 350px;
     display: flex;
     flex-direction: column;
   }
   
-  .toolsDescription {
+  #toolsDescription {
     width: 100vw;
     height: 50vh;
     display: flex;
@@ -24,7 +24,7 @@
     margin: auto;
   }
   
-  .displayIconsInfo {
+  #toolsDescription ul{
     width: 100vw;
     height: 50vh;
     opacity: 0.9;
@@ -34,61 +34,54 @@
     padding: 0;
   }
   
-  #descriptionOfTheSite {
+  article {
     margin: auto;
     width: 60vw;
   }
-  #descriptionOfTheSite h1 {
+  article h1 {
     color: black;
     text-align: center;
     font-weight: bold;
   }
   
-  #descriptionOfTheSite p {
+  article p {
     color: black;
     text-align: center;
     font-weight: bold;
     line-height: 1.5em;
   }
   
-  .iconContainer {
+  #toolsDescription ul li {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 15vw;
-    height: 20vh;
+    flex-basis: 15%;
+    height: 40%;
     background-color: white;
     border-radius: 5%;
     padding: 10px;
     box-shadow: 5px 5px 5px #ffd7d7;
   }
   
-  .iconContainer svg {
+  #toolsDescription ul li svg {
     width: 40px;
     height: 40px;
+    margin: auto;
   }
   
-  .iconContainer p {
+  #toolsDescription ul li p {
     color: black;
     font-weight: normal;
-    font-size: 0.8em;
+    font-size: 1em;
     text-align: center;
   }
   
-  .postContainer {
-    margin: auto;
-    width: 70vw;
-  }
-  
   @media screen and (max-width: 700px) {
-    .displayDescriptionOfTheSite h1 {
-      font-size: 1.2em;
+    article h1 {
+      font-size: 1.5em;
       padding: 48px 0 0 0;
     }
-    .postContainer {
-      width: 100%;
-    }
-    .displayDescriptionOfTheSite {
+    article {
       width: 95%;
     }
     h2 {
@@ -97,16 +90,16 @@
   }
   
   @media screen and (max-width: 900px) {
-    .toolsDescription h2 {
+    #toolsDescription h2 {
       text-align: center;
     }
-    .displayIconsInfo {
+    #toolsDescription ul {
       flex-direction: column;
       width: 200px;
       height: auto;
       align-items: center;
     }
-    .iconContainer {
+    #toolsDescription ul li {
       width: 100%;
       height: 200px;
       border-radius: 0;

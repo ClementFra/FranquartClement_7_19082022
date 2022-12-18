@@ -65,28 +65,37 @@ function Login() {
   }
 
   return (
-    <section>
-      <h1>Vous connecter</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" onChange={handleChange} />
-        <p className="non-valid">{errors.email}</p>
-        <label htmlFor="password">Mot de passe</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          onChange={handleChange}
-        />
-        <p className="non-valid">{errors.password}</p>
-        <button type="submit">connexion</button>
-      </form>
-      <p id="log-error" className="non-valid"></p>
-      <p>Pas de compte ?</p>
-      <button className="button-connexion">
-        <Link to="/Register">S'enregistrer</Link>
-      </button>
-    </section>
+    <body>
+      <main>
+        <section>
+          <h1>Vous connecter</h1>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              onChange={handleChange}
+            />
+            <p className="non-valid">{errors.email}</p>
+            <label htmlFor="password">Mot de passe</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              onChange={handleChange}
+            />
+            <p className="non-valid">{errors.password}</p>
+            <button type="submit">connexion</button>
+          </form>
+          <p id="log-error" className="non-valid"></p>
+          <p>Pas de compte ?</p>
+          <button className="button-connexion">
+            <Link to="/Register">S'enregistrer</Link>
+          </button>
+        </section>
+      </main>
+    </body>
   );
 }
 
