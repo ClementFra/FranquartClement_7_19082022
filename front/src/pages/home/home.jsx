@@ -21,7 +21,7 @@ const Home = () => {
           </p>
         </article>
       </div>
-      <div id="toolsDescription">
+      <article id="toolsDescription">
         <h2>Description des fonctions disponibles sur le réseau</h2>
         <ul>
           <li>
@@ -37,7 +37,7 @@ const Home = () => {
             <p>Ajouter une image à votre message</p>
           </li>
         </ul>
-      </div>
+      </article>
     </>
   );
 };
