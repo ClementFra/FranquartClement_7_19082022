@@ -1,6 +1,6 @@
 #welcomeMessage {
     width: 100vw;
-    min-height: 350px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
   }
@@ -44,11 +44,12 @@
     font-weight: bold;
   }
   
-  article p {
+  #welcomeMessage p {
     color: black;
     text-align: center;
     font-weight: bold;
-    line-height: 1.5em;
+    font-size: 1.1em;
+
   }
   
   #toolsDescription ul li {
@@ -81,8 +82,8 @@
       font-size: 1.5em;
       padding: 48px 0 0 0;
     }
-    article {
-      width: 95%;
+    #welcomeMessage p{
+      padding: 10px;
     }
     h2 {
       padding: 1em;
@@ -90,6 +91,9 @@
   }
   
   @media screen and (max-width: 900px) {
+    #welcomeMessage p{
+      padding: 10px;
+    }
     #toolsDescription h2 {
       text-align: center;
     }
