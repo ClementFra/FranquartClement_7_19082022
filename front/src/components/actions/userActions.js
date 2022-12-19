@@ -31,9 +31,6 @@ const deleteUser = (user_id) => {
     }
   };
 };
-const refreshTokenUser=() =>{
-  const user = JSON.parse(localStorage.getItem("user"));
-  return user?.refreshToken;
-}
+
 
 export { readUser, updateUser, deleteUser,refreshTokenUser};
