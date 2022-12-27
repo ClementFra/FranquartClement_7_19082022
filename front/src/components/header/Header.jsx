@@ -21,9 +21,9 @@ const Header = () => {
   const userData = useSelector((state) => state.user.user);
   console.log(userData);
   return (
-      <header>
+      <header className="header_page">
         <NavLink to="/">
-          <img
+          <img className="header_page_image"
             title="logo groupomania"
             aria-label="cliquer sur le logo pour retour a la page d'acceuil"
             src={Logo}
@@ -31,7 +31,7 @@ const Header = () => {
           />
         </NavLink>
           {userData ? (
-            <ul id="userLog">
+            <ul className="header_page_userlogin">
               <li>
                 <NavLink to="/profil">
                   <h5>Bienvenue {userData.username}</h5>
@@ -42,7 +42,7 @@ const Header = () => {
               </li>
             </ul>
           ) : (
-            <ul>
+            <ul className="header_page_userlogged">
               <NavLink to="/login">
                 <li>Connexion</li>
               </NavLink>
