@@ -21,7 +21,6 @@ const Header = () => {
   const userData = useSelector((state) => state.user.user);
   console.log(userData);
   return (
-    <body>
       <header>
         <NavLink to="/">
           <img
@@ -31,7 +30,6 @@ const Header = () => {
             alt="logo de groupomania"
           />
         </NavLink>
-        <main>
           {userData ? (
             <ul id="userLog">
               <li>
@@ -53,9 +51,7 @@ const Header = () => {
               </NavLink>
             </ul>
           )}
-        </main>
       </header>
-    </body>
   );
 };
 export default Header;

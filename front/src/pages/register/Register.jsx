@@ -59,7 +59,6 @@ function Register() {
     return Object.keys(errors).length < 1;
   }
   return (
-    <body>
       <main>
         <section>
           <h1>Créer un compte</h1>
@@ -109,7 +108,6 @@ function Register() {
           </button>
         </section>
       </main>
-    </body>
   );
 }
 

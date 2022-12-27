@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Home = () => {
   return (
     <>
-      <article id="welcomeMessage">
+      <section id="welcomeMessage">
           <h1>Bienvenue sur votre réseau social d'entreprise</h1>
           <p>
             Bienvenue sur ce nouvel outil de partage créé pour les employé(e)s
@@ -18,8 +18,8 @@ const Home = () => {
             disponibles pour partager vos expériences avec vos collègues. Créez
             un compte et connectez vous pour pouvoir y accéder.
           </p>
-      </article>
-      <article id="toolsDescription">
+      </section>
+      <section id="toolsDescription">
         <h2>Description des fonctions disponibles sur le réseau</h2>
         <ul>
           <li>
@@ -35,7 +35,7 @@ const Home = () => {
             <p>Ajouter une image à votre message</p>
           </li>
         </ul>
-      </article>
+      </section>
     </>
   );
 };

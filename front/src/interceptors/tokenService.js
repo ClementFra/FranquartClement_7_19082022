@@ -1,41 +1,36 @@
-import { useDispatch,useSelector } from "react-redux";
+import { store} from "reducers/store";
 
 const getLocalRefreshToken = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    return user?.refreshToken;
+    const state= store.getState().user
+    return state?.refreshToken;
   };
   
   const getLocalAccessToken = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    return user?.accessToken;
+    const state= store.getState().user
+    return state?.accessToken;
   };
   
-  const updateLocalAccessToken = (token) => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    user.accessToken = token;
-    localStorage.setItem("user", JSON.stringify(user));
-  };
+  
+  // const updateLocalAccessToken = (token) => {
+  //   let user = JSON.parse(localStorage.getItem("user"));
+  //   user.accessToken = token;
+  //   localStorage.setItem("user", JSON.stringify(user));
+  // };
   
   const getUser = () => {
     return JSON.parse(localStorage.getItem("user"));
   };
   
   const setUser = (user) => {
-    console.log(JSON.stringify(user));
     localStorage.setItem("user", JSON.stringify(user));
   };
   
-  const removeUser = () => {
-    localStorage.removeItem("user");
-  };
   
   const TokenService = {
     getLocalRefreshToken,
     getLocalAccessToken,
-    updateLocalAccessToken,
     getUser,
     setUser,
-    removeUser,
   };
   
   export default TokenService;

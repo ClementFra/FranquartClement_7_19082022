@@ -65,7 +65,6 @@ function Login() {
   }
 
   return (
-    <body>
       <main>
         <section>
           <h1>Vous connecter</h1>
@@ -95,7 +94,6 @@ function Login() {
           </button>
         </section>
       </main>
-    </body>
   );
 }
 
