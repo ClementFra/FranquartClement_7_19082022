@@ -11,11 +11,11 @@ module.exports = (req, res, next) => {
     req.auth = { userId:userId,isAdmin:isAdmin};
     // Check if userId exist and if isn't the same return an error message, if it's ok continue
     if (req.body.userId && req.body.userId !== userId) {
-      res.status(403).json({ error: "User ID invalid" }); // If the user don't match with the token
+      res.status(401).json({ error: "User ID invalid" }); // If the user don't match with the token
     } else {
       next();
     }
   } catch {
-    res.status(403).json({ error: "Unauthorized request." });
+    res.status(401).json({ error: "Unauthorized request." });
   }
 };
