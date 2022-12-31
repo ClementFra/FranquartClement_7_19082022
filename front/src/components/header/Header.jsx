@@ -19,7 +19,6 @@ import Logout from "pages/login/logout";
 const Header = () => {
   // If uid exist the home
   const userData = useSelector((state) => state.user.user);
-  console.log(userData);
   return (
       <header className="header_page">
         <NavLink to="/">

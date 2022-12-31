@@ -6,7 +6,6 @@ import { updateUser } from "../actions/userActions";
 //  Components
 import DeleteProfil from "./deleteProfil";
 
-
 //  Redux
 import { useDispatch, useSelector } from "react-redux";
 
@@ -20,7 +19,7 @@ const UpdateProfil = () => {
   const [biography, setBiography] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
 
-  const userData = useSelector((state) => state.userReducer);
+  const userData = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const handleUpdate = () => {
