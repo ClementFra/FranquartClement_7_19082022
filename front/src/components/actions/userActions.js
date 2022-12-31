@@ -33,4 +33,4 @@ const deleteUser = (user_id) => {
 };
 
 
-export { readUser, updateUser, deleteUser,refreshTokenUser};
+export { readUser, updateUser, deleteUser};
