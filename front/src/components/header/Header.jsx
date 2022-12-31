@@ -31,7 +31,7 @@ const Header = () => {
           />
         </NavLink>
           {userData ? (
-            <ul className="header_page_userlogin">
+            <ul className="header_page_userlogged">
               <li>
                 <NavLink to="/profil">
                   <h5>Bienvenue {userData.username}</h5>
@@ -42,12 +42,12 @@ const Header = () => {
               </li>
             </ul>
           ) : (
-            <ul className="header_page_userlogged">
+            <ul className="header_page_userlogin">
               <NavLink to="/login">
-                <li>Connexion</li>
+                <li className="header_page_userlogin_li">Connexion</li>
               </NavLink>
               <NavLink to="/register">
-                <li>S'inscrire</li>
+                <li className="header_page_userlogin_li">S'inscrire</li>
               </NavLink>
             </ul>
           )}

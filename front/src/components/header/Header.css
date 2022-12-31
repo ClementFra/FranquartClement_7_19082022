@@ -1,4 +1,4 @@
-header {
+.header_page {
   display: flex;
   position: fixed;
   width: 100%;
@@ -8,52 +8,76 @@ header {
   z-index: 1;
   background-color: #cccac9;
 }
-img {
+.header_page_image {
   position: fixed;
   width: 150px;
   object-fit: cover;
   top: 1px;
   margin: -50px 10px;
 }
-main {
+.header_page_userlogin {
   display: flex;
   flex-direction: row;
   margin: auto;
   margin-right: 25px;
 }
-main li {
+.header_page_userlogin_li {
   list-style-type: none;
   margin-left: 10px;
 }
-main ul {
+.header_page_userlogin ul {
   display: flex;
   flex-direction: row;
 }
-main a {
+.header_page_userlogin a {
   text-decoration: none;
   color: black;
   font-weight: bold;
   font-size: 1em;
 }
 
-main a :hover {
+.header_page_userlogin a :hover {
   color: #fd2d01;
   transition: all 0.3s ease-in-out;
 }
-#userLog h5{
+.header_page_userlogged_h5{
   margin: auto;
   font-size: 1em;
   font-weight: bold;
 }
+.header_page_userlogged a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+}
+.header_page_userlogged a :hover {
+  color: #fd2d01;
+  transition: all 0.3s ease-in-out;
+}
+.header_page_userlogged {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  margin-right: 25px;
+}
+.header_page_userlogged ul {
+  display: flex;
+  flex-direction: row;
+}
+.header_page_userlogged li {
+  list-style-type: none;
+  margin-left: 10px;
+}
 
 @media screen and (max-width: 600px) {
-  img {
+  .header_page_image {
     position: absolute;
     clip: rect(0px, 30px, 200px, 0px);
   }
 }
 @media screen and (max-width: 400px){
-  #userLog h5{
+  .header_page_user_logged_h5{
     font-size: 0.9em;
   }
 }
