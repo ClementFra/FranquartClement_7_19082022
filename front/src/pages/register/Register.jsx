@@ -3,6 +3,7 @@ import Axios from "interceptors/axios";
 import { checkRegister } from "helpers/validationForms";
 import { Link, useNavigate } from "react-router-dom";
 import "./register.css"
+import axiosPublic from "interceptors/axiosPublic";
 
 function Register() {
   const initialValues = {
@@ -38,7 +39,7 @@ function Register() {
     let isValid = validate();
 
     if (isValid) {
-      Axios.post("/auth/signup", user)
+      axiosPublic.post("/auth/signup", user)
         .then((res) => {
           navigate("/Login");
         })
