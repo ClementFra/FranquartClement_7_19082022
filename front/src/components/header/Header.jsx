@@ -19,11 +19,10 @@ import Logout from "pages/login/logout";
 const Header = () => {
   // If uid exist the home
   const userData = useSelector((state) => state.user.user);
-  console.log(userData);
   return (
-      <header>
+      <header className="header_page">
         <NavLink to="/">
-          <img
+          <img className="header_page_image"
             title="logo groupomania"
             aria-label="cliquer sur le logo pour retour a la page d'acceuil"
             src={Logo}
@@ -31,7 +30,7 @@ const Header = () => {
           />
         </NavLink>
           {userData ? (
-            <ul id="userLog">
+            <ul className="header_page_userlogged">
               <li>
                 <NavLink to="/profil">
                   <h5>Bienvenue {userData.username}</h5>
@@ -42,12 +41,12 @@ const Header = () => {
               </li>
             </ul>
           ) : (
-            <ul>
+            <ul className="header_page_userlogin">
               <NavLink to="/login">
-                <li>Connexion</li>
+                <li className="header_page_userlogin_li">Connexion</li>
               </NavLink>
               <NavLink to="/register">
-                <li>S'inscrire</li>
+                <li className="header_page_userlogin_li">S'inscrire</li>
               </NavLink>
             </ul>
           )}

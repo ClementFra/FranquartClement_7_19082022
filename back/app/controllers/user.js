@@ -122,36 +122,41 @@ exports.signup = (req, res, next) => {
 /*****************************************************************
  *****************     REFRESH TOKEN           *******************
  *****************************************************************/
-exports.refresh = (req, res, next) => {
-  const cookies = req.cookies;
-
-  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
-  const refreshToken = cookies.jwt;
-
-  //verifying refreshtoken
-  jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN,
-    async (error, decoded) => {
-      if (error) return res.status(401).json({ message: "Unauthorized" });
-
-      const foundUser = await User.findOne({
-        userId: decoded.userId,
-      }).exec();
-
-      if (!foundUser) return res.status(401).json({ message: "Unauthorized" });
-
+ exports.refresh = (req, res) => {
+  try {
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.sendStatus(401);
+    const refreshToken = cookies.jwt;
+    const decodedRefreshToken = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN
+    );
+    const userId = decodedRefreshToken.userId;
+    req.auth = {
+      userId,
+    };
+    if (req.body.userId && req.body.userId !== userId) {
+      throw "Invalid user ID";
+    } else {
       const accessToken = jwt.sign(
-        { userId: foundUser._id },
+        {
+          userId: decodedRefreshToken.userId,
+        },
         process.env.TOKEN_SECRET,
         {
           expiresIn: DURATION_REFRESH_TOKEN,
         }
       );
-      res.json({ accessToken });
+      res.json({
+        accessToken,
+      });
     }
-  );
-};
+  } catch {
+    res.status(403).json({
+      error: new Error("Unauthorized request!"),
+    });
+  }
+}
 
 /*****************************************************************
  *****************     USER LOGOUT          **********************

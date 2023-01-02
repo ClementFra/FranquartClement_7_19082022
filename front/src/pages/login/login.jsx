@@ -65,35 +65,45 @@ function Login() {
   }
 
   return (
-      <main>
-        <section>
-          <h1>Vous connecter</h1>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              onChange={handleChange}
-            />
-            <p className="non-valid">{errors.email}</p>
-            <label htmlFor="password">Mot de passe</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={handleChange}
-            />
-            <p className="non-valid">{errors.password}</p>
-            <button type="submit">connexion</button>
-          </form>
-          <p id="log-error" className="non-valid"></p>
-          <p>Pas de compte ?</p>
-          <button className="button-connexion">
-            <Link to="/Register">S'enregistrer</Link>
+    <main className="login_page_main">
+      <section className="login_page_section">
+        <h1 className="login_page_section_h1">Vous connecter</h1>
+        <form className="login_page_section_form" onSubmit={handleSubmit}>
+          <label className="login_page_section_form_label" htmlFor="email">
+            Email
+          </label>
+          <input
+            className="login_page_section_form__label_input"
+            type="email"
+            id="email"
+            name="email"
+            onChange={handleChange}
+          />
+          <p className="login_page_section_form_invalid">{errors.email}</p>
+          <label className="login_page_section_form_label" htmlFor="password">
+            Mot de passe
+          </label>
+          <input
+            className="login_page_section_form__label_input"
+            type="password"
+            id="password"
+            name="password"
+            onChange={handleChange}
+          />
+          <p className="login_page_section_form_invalid">{errors.password}</p>
+          <button className="login_page_section_form_button" type="submit">
+            connexion
           </button>
-        </section>
-      </main>
+        </form>
+        <p id="log-error" className="login_page_section_form_invalid"></p>
+        <p className="login_page_link">Pas de compte ?</p>
+        <button className="login_page_section_button_register">
+          <Link to="/Register" className="login_page_button_register_link">
+            S'enregistrer
+          </Link>
+        </button>
+      </section>
+    </main>
   );
 }
 
