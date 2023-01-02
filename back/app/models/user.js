@@ -20,16 +20,6 @@ const userSchema = mongoose.Schema({
         maxlength: 50,
         trim: true
     },
-    followers: [{
-        type: String,
-        default: 0,
-        ref: "User"
-    }],
-    following: [{
-        type: String,
-        default: 0,
-        ref: "User"
-    }],
     isAdmin: {
         type: Boolean,
         required: true,
