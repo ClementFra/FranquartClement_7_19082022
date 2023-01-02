@@ -18,7 +18,7 @@ import "./login.css";
 /*****************************************************************
  *****************       IMPORT INTERCEPTOR    *******************
  *****************************************************************/
-import Axios from "interceptors/axios";
+import axiosPublic from "interceptors/axiosPublic";
 import { setUser } from "reducers/userReducer";
 
 function Login() {
@@ -45,7 +45,7 @@ function Login() {
     };
     let isValid = validate();
     if (isValid) {
-      Axios.post("/auth/login", user)
+      axiosPublic.post("/auth/login", user)
         .then((res) => {
           dispatch(setUser(res.data));
           navigate("/");
