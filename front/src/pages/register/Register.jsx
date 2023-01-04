@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Axios from "interceptors/axios";
 import { checkRegister } from "helpers/validationForms";
 import { Link, useNavigate } from "react-router-dom";
 import "./register.css"
