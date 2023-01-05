@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 
 const DeleteProfil = () => {
-  const userData = useSelector((state) => state.userReducer);
+  const userData = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const handleDelete = () => dispatch(deleteUser(userData.id));
@@ -24,7 +24,7 @@ const DeleteProfil = () => {
         }
       }}
     >
-      Supprimer son profil
+      Supprimer mon profil
     </Button>
   );
 };

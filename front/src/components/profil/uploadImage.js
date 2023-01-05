@@ -12,7 +12,7 @@ import { Form, Button } from "react-bootstrap";
 const UploadImage = () => {
   const [file, setFile] = useState();
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.userReducer);
+  const userData = useSelector((state) => state.user.user);
 
   const handleAvatar = (event) => {
     event.preventDefault();
