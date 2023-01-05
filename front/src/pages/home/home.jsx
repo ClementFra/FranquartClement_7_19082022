@@ -1,5 +1,5 @@
 import React from "react";
-import "./home.css";
+import "../../components/sass/home.scss";
 import {
   faImages,
   faEnvelopeOpenText,
@@ -10,35 +10,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Home = () => {
   return (
     <>
-      <section className="home_page_section_welcome">
-        <h1 className="home_page_section_h1">
+      <section className="welcome">
+        <h1 className="welcome__title">
           Bienvenue sur votre réseau social d'entreprise
         </h1>
-        <p className="home_page_section_p">
+        <p className="welcome__text">
           Bienvenue sur ce nouvel outil de partage créé pour les employé(e)s du
           Groupe Groupomania. Découvrez toutes les fonctionnalités disponibles
           pour partager vos expériences avec vos collègues. Créez un compte et
           connectez vous pour pouvoir y accéder.
         </p>
       </section>
-      <section className="home_page_section_tools">
-        <h2 className="home_page_section_tools_h2">
+      <section className="welcome__tools">
+        <h2 className="welcome__tools--titles">
           Description des fonctions disponibles sur le réseau
         </h2>
-        <ul className="home_page_section_ul">
-          <li className="home_page_section_li">
+        <ul className="welcome__list">
+          <li className="welcome__list--active">
             <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            <p className="home_page_section_li_p">Poster vos messages</p>
+            <p className="welcome__list--text">Poster vos messages</p>
           </li>
-          <li className="home_page_section_li">
+          <li className="welcome__list--active">
             <FontAwesomeIcon icon={faCommentDots} />
-            <p className="home_page_section_li_p">
+            <p className="welcome__list--text">
               Liker-Disliker les posts de vos collègues
             </p>
           </li>
-          <li className="home_page_section_li">
+          <li className="welcome__list--active">
             <FontAwesomeIcon icon={faImages} />
-            <p className="home_page_section_li_p">
+            <p className="welcome__list--text">
               Ajouter une image à votre message
             </p>
           </li>

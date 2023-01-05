@@ -1,0 +1,114 @@
+@import "../sass/variables/variables.scss";
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 80px auto;
+  width: 20%;
+  padding: 10px;
+  background-color: $color-background;
+  border: 2px solid $color-secondary;
+  opacity: 0.9;
+}
+.login__text {
+  font-size: 1.5em;
+  color: $color-ter;
+}
+.login___formulaire {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+.login__label {
+  font-size: 1em;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $color-secondary;
+}
+
+.login__invalide--text {
+  font-size: 0.9em;
+  color: $color-primary;
+  font-style: italic;
+}
+.login__link {
+  margin-left: 15px;
+  padding: 1em;
+  border: 1px solid $color-secondary;
+  border-radius: 1em;
+  font-size: 1em;
+  color: $color-secondary;
+  font-weight: bold;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+
+  a {
+    text-decoration: none;
+    color: $color-secondary;
+    font-weight: bold;
+  }
+
+  &:hover {
+    border: 1px solid $color-primary;
+    background-color: #ffd7d7;
+  }
+}
+.login__link--text {
+  text-align: center;
+  margin-top: -50px;
+  font-size: 1.2em;
+  font-weight: bold;
+
+  a {
+    text-decoration: none;
+    color: $color-secondary;
+
+    &:hover {
+      color: $color-primary;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}
+
+/*****************************************************************
+ *********************    RESPONSIVE    **************************
+ *****************************************************************/
+
+@media screen and (max-width: 1200px) {
+  .login {
+    flex-basis: 20%;
+  }
+}
+@media screen and (max-width: 900px) {
+  .login {
+    flex-basis: 30%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .login {
+    flex-basis: 35%;
+  }
+  .login__link {
+    width: 100%;
+  }
+  .login__text {
+    margin: auto;
+    font-size: 1.2em;
+  }
+}
+@media screen and (max-width: 400px) {
+  .App-logo {
+    display: none;
+  }
+  .login {
+    width: 60%;
+  }
+  .login__link {
+    font-size: 1em;
+  }
+}
