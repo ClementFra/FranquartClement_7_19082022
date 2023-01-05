@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 /*****************************************************************
  *****************       IMPORT STYLE    *************************
  *****************************************************************/
-import "./Header.css";
+import "../sass/header.scss";
 import Logo from "../../images/logo-black.png";
 
 /*****************************************************************
@@ -17,40 +17,40 @@ import Logo from "../../images/logo-black.png";
 import Logout from "pages/login/logout";
 
 const Header = () => {
-  // If uid exist the home
   const userData = useSelector((state) => state.user.user);
   return (
-      <header className="header_page">
-        <NavLink to="/">
-          <img className="header_page_image"
-            title="logo groupomania"
-            aria-label="cliquer sur le logo pour retour a la page d'acceuil"
-            src={Logo}
-            alt="logo de groupomania"
-          />
-        </NavLink>
-          {userData ? (
-            <ul className="header_page_userlogged">
-              <li>
-                <NavLink to="/profil">
-                  <h5>Bienvenue {userData.username}</h5>
-                </NavLink>
-              </li>
-              <li>
-                <Logout />
-              </li>
-            </ul>
-          ) : (
-            <ul className="header_page_userlogin">
-              <NavLink to="/login">
-                <li className="header_page_userlogin_li">Connexion</li>
-              </NavLink>
-              <NavLink to="/register">
-                <li className="header_page_userlogin_li">S'inscrire</li>
-              </NavLink>
-            </ul>
-          )}
-      </header>
+    <header className="header">
+      <NavLink to="/">
+        <img
+          className="header__logo"
+          title="logo groupomania"
+          aria-label="cliquer sur le logo pour retour a la page d'acceuil"
+          src={Logo}
+          alt="logo de groupomania"
+        />
+      </NavLink>
+      {userData ? (
+        <ul className="nav__list--active">
+          <li className="nav__link--active">
+            <NavLink to="/profil">
+              <h5 className="nav__text">Bienvenue {userData.username}</h5>
+            </NavLink>
+          </li>
+          <li className="nav__link--active">
+            <Logout />
+          </li>
+        </ul>
+      ) : (
+        <ul className="nav__list">
+          <NavLink to="/login">
+            <li className="nav__link">Connexion</li>
+          </NavLink>
+          <NavLink to="/register">
+            <li className="nav__link">S'inscrire</li>
+          </NavLink>
+        </ul>
+      )}
+    </header>
   );
 };
 export default Header;

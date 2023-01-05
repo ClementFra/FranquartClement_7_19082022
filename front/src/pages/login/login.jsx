@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 /*****************************************************************
  *****************       IMPORT STYLE    *************************
  *****************************************************************/
-import "./login.css";
+import "../../components/sass/login.scss";
 
 /*****************************************************************
  *****************       IMPORT INTERCEPTOR    *******************
@@ -45,7 +45,8 @@ function Login() {
     };
     let isValid = validate();
     if (isValid) {
-      axiosPublic.post("/auth/login", user)
+      axiosPublic
+        .post("/auth/login", user)
         .then((res) => {
           dispatch(setUser(res.data));
           navigate("/");
@@ -65,44 +66,41 @@ function Login() {
   }
 
   return (
-    <main className="login_page_main">
-      <section className="login_page_section">
-        <h1 className="login_page_section_h1">Vous connecter</h1>
-        <form className="login_page_section_form" onSubmit={handleSubmit}>
-          <label className="login_page_section_form_label" htmlFor="email">
+    <main>
+      <section className="login">
+        <h1 className="login__text">Vous connecter</h1>
+        <form className="login__formulaire" onSubmit={handleSubmit}>
+          <label className="login__label" htmlFor="email">
             Email
           </label>
           <input
-            className="login_page_section_form__label_input"
+            className="login__input"
             type="email"
             id="email"
             name="email"
             onChange={handleChange}
           />
-          <p className="login_page_section_form_invalid">{errors.email}</p>
-          <label className="login_page_section_form_label" htmlFor="password">
+          <p className="login__invalide--text">{errors.email}</p>
+          <label className="login__label" htmlFor="password">
             Mot de passe
           </label>
           <input
-            className="login_page_section_form__label_input"
+            className="login__input"
             type="password"
             id="password"
             name="password"
             onChange={handleChange}
           />
-          <p className="login_page_section_form_invalid">{errors.password}</p>
-          <button className="login_page_section_form_button" type="submit">
+          <p className="login__invalide--text">{errors.password}</p>
+          <button className="login__link" type="submit">
             connexion
           </button>
         </form>
-        <p id="log-error" className="login_page_section_form_invalid"></p>
-        <p className="login_page_link">Pas de compte ?</p>
-        <button className="login_page_section_button_register">
-          <Link to="/Register" className="login_page_button_register_link">
-            S'enregistrer
-          </Link>
-        </button>
+        <p id="log-error" className="login__invalide--text"></p>
       </section>
+      <p className="login__link--text">
+        Pas de compte ? <Link to="/Register">Enregistrez-vous !</Link>{" "}
+      </p>
     </main>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { checkRegister } from "helpers/validationForms";
 import { Link, useNavigate } from "react-router-dom";
-import "./register.css"
+import "../../components/sass/register.scss"
 import axiosPublic from "interceptors/axiosPublic";
 
 function Register() {
@@ -62,53 +62,50 @@ function Register() {
   }
   return (
       <main>
-        <section className="register_page">
-          <h1 className="register_page_h1">Créer un compte</h1>
-          <form className="register_page_form" onSubmit={handleSubmit}>
-            <label className="register_page_label" htmlFor="email">Email:</label>
-            <input className="register_page_input"
+        <section className="register">
+          <h1 className="register__title">Créer un compte</h1>
+          <form className="register__formulaire" onSubmit={handleSubmit}>
+            <label className="register__label" htmlFor="email">Email</label>
+            <input className="register__input"
               type="email"
               id="email"
               name="email"
               value={values.email}
               onChange={handleInputChange}
             />
-            <p className="login_page_section_form_invalid">{errors.email}</p>
-            <label className="register_page_label" htmlFor="username">Pseudo:</label>
-            <input className="register_page_input"
+            <p className="login__invalide--text">{errors.email}</p>
+            <label className="register__label" htmlFor="username">Pseudo</label>
+            <input className="register__input"
               type="text"
               id="username"
               name="username"
               value={values.username}
               onChange={handleInputChange}
             />
-            <p className="login_page_section_form_invalid">{errors.username}</p>
-            <label className="register_page_label" htmlFor="firstPassword">Mot de passe:</label>
-            <input className="register_page_input"
+            <p className="login__invalide--text">{errors.username}</p>
+            <label className="register__label" htmlFor="firstPassword">Mot de passe</label>
+            <input className="register__input"
               type="password"
               id="firstPassword"
               name="firstPassword"
               value={values.firstPassword}
               onChange={handleInputChange}
             />
-            <p className="login_page_section_form_invalid">{errors.firstPassword}</p>
-            <label className="register_page_label" htmlFor="secondPassword">Confirmer le mot de passe:</label>
-            <input className="register_page_input"
+            <p className="login__invalide--text">{errors.firstPassword}</p>
+            <label className="register__label" htmlFor="secondPassword">Confirmer le mot de passe</label>
+            <input className="register__input"
               type="password"
               id="secondPassword"
               name="secondPassword"
               value={values.secondPassword}
               onChange={handleInputChange}
             />
-            <p className="login_page_section_form_invalid">{errors.secondPassword}</p>
-            <p id="form-error" className="login_page_section_form_invalid"></p>
-            <button className="register_page_button" type="submit">Créer un compte</button>
-            <p>Déja inscrit ?</p>
+            <p className="login__invalide--text">{errors.secondPassword}</p>
+            <p id="form-error" className="login__invalide--text"></p>
+            <button className="register__link" type="submit">Créer un compte</button>      
           </form>
-          <button className="register_page_link_login">
-            <Link to="/Login" className="link_login">Connexion</Link>
-          </button>
         </section>
+        <p className="register__link--text">Déja inscrit ? <Link to="/Login" className="link_login">identifiez-vous !</Link></p>
       </main>
   );
 }
