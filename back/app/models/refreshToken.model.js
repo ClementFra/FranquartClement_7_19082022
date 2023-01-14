@@ -1,41 +1,43 @@
 require("dotenv").config();
 
-const { v4: uuidv4 } = require("uuid");
+const mongoose = require("mongoose");
+const { v4: uuidv4 } = require('uuid');
 
-module.exports = (sequelize, Sequelize) => {
-  const RefreshToken = sequelize.define("refreshToken", {
-    token: {
-      type: Sequelize.STRING,
-    },
-    expiryDate: {
-      type: Sequelize.DATE,
-    },
+const RefreshTokenSchema = new mongoose.Schema({
+  token: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  expiryDate: Date,
+});
+
+RefreshTokenSchema.statics.createToken = async function (user) {
+  let expiredAt = new Date();
+
+  expiredAt.setSeconds(
+    expiredAt.getSeconds() + process.env.jwtRefreshExpiration
+  );
+
+  let _token = uuidv4();
+
+  let _object = new this({
+    token: _token,
+    user: user._id,
+    expiryDate: expiredAt.getTime(),
   });
 
-  RefreshToken.createToken = async function (user) {
-    let expiredAt = new Date();
-    expiredAt.setSeconds(
-      expiredAt.getSeconds() + parseInt(process.env.JWTRefreshExpiration)
-    );
-    let _token = uuidv4();
+  console.log(_object);
 
-    let refreshToken = await this.create({
-      token: _token,
-      userId: user._id,
-      expiryDate: expiredAt.getTime(),
-    });
-    return refreshToken.token;
-  };
-  RefreshToken.verifyExpiration = (token) => {
-    return token.expiryDate.getTime() < new Date().getTime();
-  };
+  let refreshToken = await _object.save();
 
-  RefreshToken.associate = (models) => {
-    RefreshToken.belongsTo(models.user, {
-      foreignKey: "userId",
-      targetKey: "id",
-    });
-  };
-
-  return RefreshToken;
+  return refreshToken.token;
 };
+
+RefreshTokenSchema.statics.verifyExpiration = (token) => {
+  return token.expiryDate.getTime() < new Date().getTime();
+}
+
+const RefreshToken = mongoose.model("RefreshToken", RefreshTokenSchema);
+
+module.exports = RefreshToken;

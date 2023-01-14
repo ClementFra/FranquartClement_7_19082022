@@ -90,13 +90,13 @@ exports.login = (req, res) => {
         process.env.TOKEN_SECRET,
         { expiresIn }
       );
-      // const userSend = hateoasLinks(req, user, user._id);
+       const userSend = hateoasLinks(req, user, user._id);
       const refreshToken = RefreshToken.createToken(user);
       res.status(200).json({
         userId: user._id,
         token: accessToken,
         refreshToken: refreshToken,
-        // userSend,
+         userSend,
       });
     })
     .catch((error) => res.status(500).json(error));
