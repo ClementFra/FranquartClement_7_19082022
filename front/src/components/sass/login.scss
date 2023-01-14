@@ -12,11 +12,11 @@
   border: 2px solid $color-secondary;
   opacity: 0.9;
 }
-.login__text {
+.login__title {
   font-size: 1.5em;
   color: $color-ter;
 }
-.login___formulaire {
+.login___form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -30,13 +30,13 @@
   border-bottom: 1px solid $color-secondary;
 }
 
-.login__invalide--text {
+.login__invalid-text {
   font-size: 0.9em;
   color: $color-primary;
   font-style: italic;
 }
-.login__link {
-  margin-left: 30px;
+.login__button {
+  margin-left: 15px;
   padding: 1em;
   border: 1px solid $color-secondary;
   border-radius: 1em;
@@ -57,7 +57,7 @@
     background-color: #ffd7d7;
   }
 }
-.login__link--text {
+.login__text {
   text-align: center;
   margin-top: -50px;
   font-size: 1.2em;

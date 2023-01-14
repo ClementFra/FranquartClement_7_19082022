@@ -68,8 +68,8 @@ function Login() {
   return (
     <main>
       <section className="login">
-        <h1 className="login__text">Vous connecter</h1>
-        <form className="login__formulaire" onSubmit={handleSubmit}>
+        <h1 className="login__title">Vous connecter</h1>
+        <form className="login__form" onSubmit={handleSubmit}>
           <label className="login__label" htmlFor="email">
             Email
           </label>
@@ -80,7 +80,7 @@ function Login() {
             name="email"
             onChange={handleChange}
           />
-          <p className="login__invalide--text">{errors.email}</p>
+          <p className="login__invalid-text">{errors.email}</p>
           <label className="login__label" htmlFor="password">
             Mot de passe
           </label>
@@ -91,15 +91,18 @@ function Login() {
             name="password"
             onChange={handleChange}
           />
-          <p className="login__invalide--text">{errors.password}</p>
-          <button className="login__link" type="submit">
+          <p className="login__invalid-text">{errors.password}</p>
+          <button className="login__button" type="submit">
             connexion
           </button>
         </form>
-        <p id="log-error" className="login__invalide--text"></p>
+        <p id="log-error" className="login__invalid-text"></p>
       </section>
-      <p className="login__link--text">
-        Pas de compte ? <Link to="/Register">Enregistrez-vous !</Link>{" "}
+      <p className="login__text">
+        Pas de compte ?{" "}
+        <Link to="/Register" className="login__link-text">
+          Enregistrez-vous !
+        </Link>{" "}
       </p>
     </main>
   );

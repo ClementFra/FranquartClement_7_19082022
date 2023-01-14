@@ -36,7 +36,7 @@
     }
   }
 }
-.nav__list--active {
+.nav__list {
   display: flex;
   flex-direction: row;
   margin: auto;
@@ -47,11 +47,11 @@
     font-weight: bold;
   }
 }
-.nav__link {
+.nav__item {
   list-style-type: none;
   margin-left: 10px;
 }
-.nav__link--active {
+.nav__list-text {
   list-style-type: none;
   margin-left: 10px;
 

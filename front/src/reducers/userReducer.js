@@ -19,6 +19,7 @@ export const userSlice = createSlice({
       state.refreshToken = null;
     },
     updateToken: (state, actions) => {
+      
       state.accessToken = actions.payload.refreshToken;
     },
   },

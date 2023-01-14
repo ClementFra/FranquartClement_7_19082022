@@ -21,24 +21,24 @@ const Home = () => {
           connectez vous pour pouvoir y accéder.
         </p>
       </section>
-      <section className="welcome__tools">
-        <h2 className="welcome__tools--titles">
+      <section className="function">
+        <h2 className="function__title">
           Description des fonctions disponibles sur le réseau
         </h2>
-        <ul className="welcome__list">
-          <li className="welcome__list--active">
+        <ul className="function__list">
+          <li className="function__item">
             <FontAwesomeIcon icon={faEnvelopeOpenText} />
-            <p className="welcome__list--text">Poster vos messages</p>
+            <p className="function__text">Poster vos messages</p>
           </li>
-          <li className="welcome__list--active">
+          <li className="function__item">
             <FontAwesomeIcon icon={faCommentDots} />
-            <p className="welcome__list--text">
+            <p className="function__text">
               Liker-Disliker les posts de vos collègues
             </p>
           </li>
-          <li className="welcome__list--active">
+          <li className="function__item">
             <FontAwesomeIcon icon={faImages} />
-            <p className="welcome__list--text">
+            <p className="function__text">
               Ajouter une image à votre message
             </p>
           </li>

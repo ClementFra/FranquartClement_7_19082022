@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const RefreshToken = require("../models/refreshToken.model");
 const jwt = require("jsonwebtoken");
 const cryptoJS = require("crypto-js");
 const fs = require("fs");
@@ -47,10 +48,10 @@ exports.signup = (req, res, next) => {
       const user = new User({
         email: encrypt(req.body.email), // EncrypString the email
         password: hash,
+        //imageUrl: `${req.protocol}://${req.get("host")}/images/Avatar.png`,
         username: req.body.username,
         isAdmin: req.body.isAdmin,
       });
-      console.log(user.email);
       user
         .save() // Save the user
         .then((newUser) => {
@@ -66,7 +67,7 @@ exports.signup = (req, res, next) => {
 /*****************************************************************
  *****************     USER LOGING           *********************
  *****************************************************************/
- exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   const encryptedEmail = encrypt(req.body.email);
 
   User.findOne({ email: encryptedEmail })
@@ -75,88 +76,73 @@ exports.signup = (req, res, next) => {
         return res.status(401).json({ error: "User not found !" });
       }
       user.email = decrypt(user.email);
-      bcrypt
-        .compare(req.body.password, user.password)
-        .then((valid) => {
-          if (!valid) {
-            return res
-              .status(401)
-              .json({ error: "Your password is incorrect !" });
-          }
+      bcrypt.compare(req.body.password, user.password).then((valid) => {
+        if (!valid) {
+          return res
+            .status(401)
+            .json({ error: "Your password is incorrect !" });
+        }
+      });
+      const expiresIn = parseInt(process.env.JWTExpiration);
 
-          const accessToken = jwt.sign(
-            { userId: user._id, isAdmin: user.isAdmin },
-            process.env.TOKEN_SECRET,
-            { expiresIn: "12h" }
-          );
-
-          const refreshToken = jwt.sign(
-            { userId: user._id, isAdmin: user.isAdmin },
-            process.env.REFRESH_TOKEN,
-            { expiresIn: "24h" }
-          );
-          const userSend = hateoasLinks(req, user, user._id);
-
-          res.cookie("jwt", refreshToken, {
-            httpOnly: true, 
-            sameSite: "None", 
-            maxAge: 1000 * 60 * 60 * 24,
-          });
-
-          res.status(200).json({
-            userId: user._id,
-            token: accessToken,
-            refreshToken: refreshToken,
-            userSend,
-          });
-        })
-        .catch((error) => {
-          const errors = logInErrors(error);
-          res.status(500).send({ errors });
-        });
+      const accessToken = jwt.sign(
+        { userId: user._id, isAdmin: user.isAdmin },
+        process.env.TOKEN_SECRET,
+        { expiresIn }
+      );
+      // const userSend = hateoasLinks(req, user, user._id);
+      const refreshToken = RefreshToken.createToken(user);
+      res.status(200).json({
+        userId: user._id,
+        token: accessToken,
+        refreshToken: refreshToken,
+        // userSend,
+      });
     })
     .catch((error) => res.status(500).json(error));
 };
 
-
 /*****************************************************************
  *****************     REFRESH TOKEN           *******************
  *****************************************************************/
- exports.refresh = (req, res) => {
-  try {
-    const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(401);
-    const refreshToken = cookies.jwt;
-    const decodedRefreshToken = jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN
-    );
-    const userId = decodedRefreshToken.userId;
-    req.auth = {
-      userId,
-    };
-    if (req.body.userId && req.body.userId !== userId) {
-      throw "Invalid user ID";
-    } else {
-      const accessToken = jwt.sign(
-        {
-          userId: decodedRefreshToken.userId,
-        },
-        process.env.TOKEN_SECRET,
-        {
-          expiresIn: DURATION_REFRESH_TOKEN,
-        }
-      );
-      res.json({
-        accessToken,
-      });
-    }
-  } catch {
-    res.status(403).json({
-      error: new Error("Unauthorized request!"),
-    });
+exports.refresh = async (req, res) => {
+  const { refreshToken: requestToken } = req.body;
+  if (requestToken == null) {
+    return res.status(403).json({ message: "Refresh Token is required!" });
   }
-}
+  try {
+    let refreshToken = await RefreshToken.findOne({
+      where: { token: requestToken },
+    });
+    if (!refreshToken) {
+      res.status(403).json({ message: "Refresh token was not found !" });
+      return;
+    }
+    if (RefreshToken.verifyExpiration(refreshToken)) {
+      RefreshToken.destroy({ where: { id: refreshToken.id } });
+
+      res.status(403).json({
+        message: "Refresh token was expired.",
+      });
+      return;
+    }
+    const expiresIn = parseInt(process.env.JWTExpiration);
+    const user = await refreshToken.getUser();
+
+    const newAccessToken = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.TOKEN_SECRET,
+      { expiresIn }
+    );
+    return res.status(200).json({
+      userId: user._id,
+      accessToken: newAccessToken,
+      refreshToken: refreshToken.token,
+    });
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
+};
 
 /*****************************************************************
  *****************     USER LOGOUT          **********************
@@ -256,12 +242,14 @@ exports.updateUser = (req, res, next) => {
           update.password = hash;
         }
         // Check image
-        const userObject = req.file ? {
-          ...update,
-          imageUrl: `/images/${req.file.filename}`
-        } : {
-          ...update
-        };
+        const userObject = req.file
+          ? {
+              ...update,
+              imageUrl: `/images/${req.file.filename}`,
+            }
+          : {
+              ...update,
+            };
         const filename = user.imageUrl.split("/images/")[1];
         try {
           if (userObject.imageUrl) {
@@ -271,8 +259,8 @@ exports.updateUser = (req, res, next) => {
           console.log(error);
         }
         // Update user new info in database
-        User.findByIdAndUpdate({ _id: req.auth.userId }, update)
-        .then((userUpdate) => {
+        User.findByIdAndUpdate({ _id: req.auth.userId }, update).then(
+          (userUpdate) => {
             userUpdate.email = decrypt(userUpdate.email);
             res.status(200).json(hateoasLinks(req, userUpdate, userUpdate._id)); // Request ok
           }
@@ -315,7 +303,7 @@ const hateoasLinks = (req, user) => {
     {
       rel: "read",
       title: "Read",
-      href: URI+ user.id,
+      href: URI + user.id,
       method: "GET",
     },
     {

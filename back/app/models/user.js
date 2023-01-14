@@ -1,35 +1,48 @@
-const mongoose = require(`mongoose`);
-const uniqueValidator = require(`mongoose-unique-validator`);
-
-// Setting schema for a user
-const userSchema = mongoose.Schema({
-    email:{
-        type: String,
+module.exports = (sequelize, Sequelize) => {
+  const User = sequelize.define(
+    "user",
+    {
+      email: {
+        type: Sequelize.STRING(),
         required: true,
-        unique: true
-    },
-    password:{
-        type: String, 
-        required: true
-    },
-    username: {
-        type: String,
+        unique: true,
+      },
+      password: {
+        type: Sequelize.STRING(32),
+        required: true,
+      },
+      username: {
+        type: Sequelize.STRING,
         required: true,
         unique: true,
         minlength: 3,
         maxlength: 50,
-        trim: true
-    },
-    isAdmin: {
-        type: Boolean,
+        trim: true,
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
         required: true,
-        default: false
+        default: false,
+      },
+      aboutMe: {
+        type: Sequelize.STRING,
+        maxlength: 1024,
+        default: "Vive Groupomania...",
+      },
+      imageUrl: {
+        type: Sequelize.STRING,
+      },
+    },
+    {
+      timestamps: true,
     }
-},{
-    timestamps: true
-});
+  );
 
-// Check for duplicate database entries, if user have the same email adress before register
-userSchema.plugin(uniqueValidator);
-
-module.exports = mongoose.model("User", userSchema);
+  User.associate = (models) => {
+    User.hasOne(models.refreshToken, {
+      foreignKey: "userId",
+      targetKey: "id",
+    });
+  };
+  return User;
+};

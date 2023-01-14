@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from "../../interceptors/axios";
 import { setUser } from "../../reducers/userReducer";
 
 const readUser = (user_id) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`api/user/${user_id}`);
+      const res = await axios.get(`auth/${user_id}`);
       return dispatch(setUser(res.data));
     } catch (error) {
       console.log(error);
@@ -15,7 +15,7 @@ const readUser = (user_id) => {
 const updateUser = (user_id, data) => {
   return async () => {
     try {
-      await axios.put(`api/user/${user_id}`, data);
+      await axios.put(`auth/${user_id}`, data);
     } catch (error) {
       console.log(error);
     }
@@ -25,7 +25,7 @@ const updateUser = (user_id, data) => {
 const deleteUser = (user_id) => {
   return async () => {
     try {
-      await axios.delete(`api/user/delete/${user_id}`);
+      await axios.delete(`/auth/delete/${user_id}`);
     } catch (error) {
       console.log(error);
     }
