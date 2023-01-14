@@ -1,22 +1,22 @@
 require("dotenv").config();
 
 const mongoose = require("mongoose");
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 const RefreshTokenSchema = new mongoose.Schema({
-  token: String,
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+  token: {
+    type: String,
   },
-  expiryDate: Date,
+  expiryDate: {
+    type: Date,
+  },
 });
 
 RefreshTokenSchema.statics.createToken = async function (user) {
   let expiredAt = new Date();
 
   expiredAt.setSeconds(
-    expiredAt.getSeconds() + process.env.jwtRefreshExpiration
+    expiredAt.getSeconds() + process.env.JWTRefreshExpiration
   );
 
   let _token = uuidv4();
@@ -36,7 +36,7 @@ RefreshTokenSchema.statics.createToken = async function (user) {
 
 RefreshTokenSchema.statics.verifyExpiration = (token) => {
   return token.expiryDate.getTime() < new Date().getTime();
-}
+};
 
 const RefreshToken = mongoose.model("RefreshToken", RefreshTokenSchema);
 
