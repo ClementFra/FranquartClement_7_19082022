@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Styles
 import { Button } from "react-bootstrap";
+import "../sass/profil.scss";
 
 const DeleteProfil = () => {
   const userData = useSelector((state) => state.user.user);
@@ -16,7 +17,7 @@ const DeleteProfil = () => {
   const handleDelete = () => dispatch(deleteUser(userData._id));
 
   return (
-    <Button
+    <Button className="update__button"
       onClick={() => {
         if (window.confirm("Voulez-vous supprimer votre profil?")) {
           handleDelete();

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 //  Styles
 import { Form, Button } from "react-bootstrap";
 
+
 const UploadImage = () => {
   const [file, setFile] = useState();
   const dispatch = useDispatch();

@@ -42,5 +42,9 @@ const LogoutUser=()=>{
   };
 }
 
+const uploadPicture=(data,id)=>{
 
-export { readUser, updateUser, deleteUser,LogoutUser};
+}
+
+
+export { readUser, updateUser, deleteUser,LogoutUser,uploadPicture};

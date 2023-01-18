@@ -3,6 +3,7 @@ import React, { useState } from "react";
 //  Actions
 import { updateUser } from "../actions/userActions";
 
+
 //  Components
 import DeleteProfil from "./deleteProfil";
 
@@ -10,7 +11,8 @@ import DeleteProfil from "./deleteProfil";
 import { useDispatch, useSelector } from "react-redux";
 
 //  Styles
-import { Card, Container, Row, Col, Button } from "react-bootstrap";
+import { Card, Container,Image, Row, Col, Button } from "react-bootstrap";
+import "../sass/profil.scss";
 
 //  Utils
 import { dateParser } from "../utils/utils";
@@ -27,23 +29,36 @@ const UpdateProfil = () => {
     setUpdateForm(false);
   };
 
+  
+
   return (
-    <Container>
-      <Row>
-        <Col sm={5}>
-          <Card>
-            <Card.Header as="h4">Biographie</Card.Header>
+
+    <Container className="profil">
+      <Row className="card">
+        <Col>
+          <Card >
+            <Card.Header className="profil__title">Votre Profil</Card.Header>
             <Card.Body>
-              <Card.Text onClick={() => setUpdateForm(!updateForm)}>
-                {userData.biography}
+              <Image className="profil__image"
+                src='https://cdn.pixabay.com/photo/2015/01/09/11/09/meeting-594091_960_720.jpg'
+                alt="avatar"
+              />
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col className="update">
+          <Card>
+            <Card.Header className="update__title">Biographie</Card.Header>
+            <Card.Body className="update__text" >
+              {userData.biography? userData.biography:"Vive Groupomania"}
+              <Card.Text  onClick={() => setUpdateForm(!updateForm)}>
+                
               </Card.Text>
             </Card.Body>
-
+            
             {updateForm === false && (
-              <Button
-                variant="secondary"
-                onClick={() => setUpdateForm(!updateForm)}
-              >
+              <Button className="update__button"  onClick={() => setUpdateForm(!updateForm)}>
                 Modifier ma biographie
               </Button>
             )}
@@ -53,18 +68,19 @@ const UpdateProfil = () => {
                 <textarea
                   type="text"
                   defaultValue={userData.biography}
-                  onChange={(e) => setBiography(e.target.value)}
+                  onChange={e => setBiography(e.target.value)}
                 ></textarea>
                 <Button onClick={handleUpdate}>Valider</Button>
               </>
             )}
 
-            <Card.Footer>
-              <h6>Membre depuis {dateParser(userData.createdAt)}</h6>
+            <Card.Footer className="footer">
+              <h6 className="footer__member">Membre depuis {dateParser(userData.createdAt)}</h6>
               <DeleteProfil />
             </Card.Footer>
           </Card>
         </Col>
+
       </Row>
     </Container>
   );
