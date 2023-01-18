@@ -92,13 +92,13 @@ exports.login = (req, res) => {
         { expiresIn }
       );
       const userSend = hateoasLinks(req, user, user._id);
-      const refreshToken = RefreshToken.createToken(user);
-      console.log(refreshToken);
-      res.status(200).json({
-        userId: user._id,
-        token: accessToken,
-        refreshToken: refreshToken,
-        userSend,
+      RefreshToken.createToken(user).then((refreshToken) => {
+        res.status(200).json({
+          userId: user._id,
+          token: accessToken,
+          refreshToken: refreshToken,
+          userSend,
+        });
       });
     })
     .catch((error) => res.status(500).json(error));
@@ -134,7 +134,7 @@ exports.refresh = async (req, res) => {
     }
     const expiresIn = parseInt(process.env.JWTExpiration);
     let newAccessToken = jwt.sign(
-      { id: refreshToken.user._id, isAdmin: user.isAdmin},
+      { id: refreshToken.user._id, isAdmin: user.isAdmin },
       process.env.TOKEN_SECRET,
       { expiresIn }
     );
