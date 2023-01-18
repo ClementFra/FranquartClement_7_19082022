@@ -93,6 +93,7 @@ exports.login = (req, res) => {
       );
       const userSend = hateoasLinks(req, user, user._id);
       const refreshToken = RefreshToken.createToken(user);
+      console.log(refreshToken);
       res.status(200).json({
         userId: user._id,
         token: accessToken,
@@ -132,7 +133,6 @@ exports.refresh = async (req, res) => {
       return;
     }
     const expiresIn = parseInt(process.env.JWTExpiration);
-    const user = await refreshToken.getUser();
     let newAccessToken = jwt.sign(
       { id: refreshToken.user._id, isAdmin: user.isAdmin},
       process.env.TOKEN_SECRET,

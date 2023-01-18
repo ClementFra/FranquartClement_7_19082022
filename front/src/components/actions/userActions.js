@@ -1,31 +1,31 @@
 import axios from "../../interceptors/axios";
 import { setUser } from "../../reducers/userReducer";
 
-const readUser = (user_id) => {
-  return async (dispatch) => {
+const readUser = () => {
+  return async () => {
     try {
-      const res = await axios.get(`auth/${user_id}`);
-      return dispatch(setUser(res.data));
+      const res = await axios.get(`auth/`);
+      return setUser(res.data);
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const updateUser = (user_id, data) => {
+const updateUser = (data) => {
   return async () => {
     try {
-      await axios.put(`auth/${user_id}`, data);
+      await axios.put(`auth/`, data);
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const deleteUser = (user_id) => {
+const deleteUser = () => {
   return async () => {
     try {
-      await axios.delete(`/auth/delete/${user_id}`);
+      await axios.delete(`/auth`);
     } catch (error) {
       console.log(error);
     }

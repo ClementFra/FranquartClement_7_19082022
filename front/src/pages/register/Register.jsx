@@ -77,7 +77,7 @@ function Register() {
             value={values.email}
             onChange={handleInputChange}
           />
-          <p className="login__invalid-text">{errors.email}</p>
+          <p className="invalid__text">{errors.email}</p>
           <label className="register__label" htmlFor="username">
             Pseudo
           </label>
@@ -89,7 +89,7 @@ function Register() {
             value={values.username}
             onChange={handleInputChange}
           />
-          <p className="login__invalid-text">{errors.username}</p>
+          <p className="invalid__text">{errors.username}</p>
           <label className="register__label" htmlFor="firstPassword">
             Mot de passe
           </label>
@@ -101,7 +101,7 @@ function Register() {
             value={values.firstPassword}
             onChange={handleInputChange}
           />
-          <p className="login__invalid-text">{errors.firstPassword}</p>
+          <p className="invalid__text">{errors.firstPassword}</p>
           <label className="register__label" htmlFor="secondPassword">
             Confirmer le mot de passe
           </label>
@@ -113,8 +113,8 @@ function Register() {
             value={values.secondPassword}
             onChange={handleInputChange}
           />
-          <p className="login__invalid-text">{errors.secondPassword}</p>
-          <p id="form-error" className="login__invalid-text"></p>
+          <p className="invalid__text">{errors.secondPassword}</p>
+          <p id="form-error" className="invalid__text"></p>
           <button className="register__link" type="submit">
             Créer un compte
           </button>
@@ -122,7 +122,7 @@ function Register() {
       </section>
       <p className="register__text">
         Déja inscrit ?{" "}
-        <Link to="/Login" className="register__link-text">
+        <Link to="/Login" className="link__text">
           identifiez-vous !
         </Link>
       </p>

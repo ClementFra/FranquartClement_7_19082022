@@ -80,7 +80,7 @@ function Login() {
             name="email"
             onChange={handleChange}
           />
-          <p className="login__invalid-text">{errors.email}</p>
+          <p className="invalid__text">{errors.email}</p>
           <label className="login__label" htmlFor="password">
             Mot de passe
           </label>
@@ -91,16 +91,16 @@ function Login() {
             name="password"
             onChange={handleChange}
           />
-          <p className="login__invalid-text">{errors.password}</p>
+          <p className="invalid__text">{errors.password}</p>
           <button className="login__button" type="submit">
             connexion
           </button>
         </form>
-        <p id="log-error" className="login__invalid-text"></p>
+        <p id="log-error" className="invalid__text"></p>
       </section>
       <p className="login__text">
         Pas de compte ?{" "}
-        <Link to="/Register" className="login__link-text">
+        <Link to="/Register" className="link__text">
           Enregistrez-vous !
         </Link>{" "}
       </p>
