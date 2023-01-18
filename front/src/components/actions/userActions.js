@@ -32,5 +32,15 @@ const deleteUser = () => {
   };
 };
 
+const LogoutUser=()=>{
+  return async () => {
+    try {
+      await axios.get(`/logout`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
 
-export { readUser, updateUser, deleteUser};
+
+export { readUser, updateUser, deleteUser,LogoutUser};
