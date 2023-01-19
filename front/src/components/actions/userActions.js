@@ -4,7 +4,7 @@ import { setUser } from "../../reducers/userReducer";
 const readUser = () => {
   return async () => {
     try {
-      const res = await axios.get(`auth/`);
+      const res = await axios.get(`/auth`);
       return setUser(res.data);
     } catch (error) {
       console.log(error);
@@ -15,7 +15,7 @@ const readUser = () => {
 const updateUser = (data) => {
   return async () => {
     try {
-      await axios.put(`auth/`, data);
+      await axios.put(`/auth`, data);
     } catch (error) {
       console.log(error);
     }
