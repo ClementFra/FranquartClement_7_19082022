@@ -37,7 +37,7 @@ const UpdateProfil = () => {
       <Row className="card">
         <Col>
           <Card >
-            <Card.Header className="profil__title">Votre Profil</Card.Header>
+            <Card.Header className="profil__title">Mon Profil</Card.Header>
             <Card.Body>
               <Image className="profil__image"
                 src='https://cdn.pixabay.com/photo/2015/01/09/11/09/meeting-594091_960_720.jpg'
