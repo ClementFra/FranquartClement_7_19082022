@@ -1,72 +1,125 @@
 @import "./variables/variables.scss";
 
-.card{
-    padding-left: 15px;
+.card {
+  display: flex;
+  justify-content: center;
 }
-.profil{
-    padding: 20px;
-    margin: 90px auto;
-    width: 15%;
-    height: 600px;
-    background-color: $color-background;
-    border: 2px solid $color-secondary;
-    opacity: 0.9;
-    margin-top: 120px;
+.profil {
+  width: 20%;
+  padding: 2%;
+  margin: 90px auto;
+  background-color: $color-background;
+  border: 2px solid $color-secondary;
+  opacity: 0.9;
 }
-
-.profil__title{
-    display: flex;
-    color:$color-secondary;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    margin-left: 45px;
-    font-size: 1.5em;
-    font-weight: bold;
+.profil__informations {
+  margin: auto;
+  margin-right: 30px;
 }
-
-.profil__image{
-    height: 120px;
-    width: 120px;
-    border: 2px solid $color-secondary;
-    margin-left: 45px;
+.profil__username {
+  text-align: center;
+  color: $color-primary;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
-.update__title{
-    color:$color-secondary;
-    margin-top: 10px;
-    margin-left: 50px;
-    font-size: 1.5em;
-    font-weight: bold 
+.profil__image {
+  height: 120px;
+  width: 120px;
+  border: 2px solid $color-secondary;
 }
-.update__text{
-    font-size: 1em;
-    font-weight: bold;
-    margin:15px 40px 20px;
+
+.update__title {
+  color: $color-secondary;
+  margin-top: 10px;
+  margin-left: 50px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.update__text {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 15px 40px 20px;
 }
 
 .update__button {
-    margin-left: 15px;
-    padding: 1em;
-    border: 1px solid $color-secondary;
-    border-radius: 1em;
-    font-size: 1em;
+  margin-left: 5px;
+  padding: 1em;
+  border: 1px solid $color-secondary;
+  border-radius: 1em;
+  font-size: 1em;
+  color: $color-secondary;
+  font-weight: bold;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+
+  a {
+    text-decoration: none;
     color: $color-secondary;
     font-weight: bold;
-    cursor: pointer;
-    transition: ease-in-out 0.2s;
-  
-    a {
-      text-decoration: none;
-      color: $color-secondary;
-      font-weight: bold;
-    }
-  
-    &:hover {
-      border: 1px solid $color-primary;
-      background-color: #ffd7d7;
-    }
   }
 
-.footer__member{
+  &:hover {
+    border: 1px solid $color-primary;
+    background-color: #ffd7d7;
+  }
+}
+
+.footer__member {
+  font-size: 0.9em;
+}
+
+/*****************************************************************
+ *********************    RESPONSIVE    **************************
+ *****************************************************************/
+
+@media screen and (max-width: 1450px) {
+  .profil {
+    width: 30%;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .profil {
+    width: 30%;
+  }
+  .footer__member {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .profil {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .card {
+    flex-direction: column;
+  }
+  .profil {
+    width: 50%;
+  }
+  .profil__informations {
+    margin: auto;
+  }
+  .update__nav {
+    margin-left: 20%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .update__nav {
+    margin-left: auto;
+  }
+  .update__title {
+    margin-left: 20%;
+  }
+
+  .update__button {
     font-size: 0.9em;
+  }
+  .update__text {
+    text-align: center;
+  }
 }

@@ -40,30 +40,31 @@ function Login() {
   }
   function handleSubmit(e) {
     e.preventDefault();
+    document.querySelector("#log-error").innerHTML = "";
     const user = {
       ...values,
     };
-    let isValid = validate();
-    if (isValid) {
-      axiosPublic
-        .post("/auth/login", user)
-        .then((res) => {
-          dispatch(setUser(res.data));
-          navigate("/");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
+    const formErrors = checkLogin(values);
+    console.log(formErrors);
+    if (Object.keys(formErrors).length !== 0) {
+      setFormError(formErrors);
       document.querySelector("#log-error").innerHTML =
         "La connexion comprend une erreur.";
     }
+    else{
+      axiosPublic
+      .post("/auth/login", user)
+      .then((res) => {
+        dispatch(setUser(res.data));
+        navigate("/");
+      })
+      .catch((error) => {
+        document.querySelector("#log-error").innerHTML =
+        "L'email ou le mot de passe est invalide.";
+      });
+    }
   }
 
-  function validate() {
-    setFormError(checkLogin(values));
-    return Object.keys(errors).length < 1;
-  }
 
   return (
     <main>

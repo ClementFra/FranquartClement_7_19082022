@@ -7,6 +7,10 @@ const RefreshTokenSchema = new mongoose.Schema({
   token: {
     type: String,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   expiryDate: {
     type: Date,
   },

@@ -12,10 +12,10 @@ const readUser = () => {
   };
 };
 
-const updateUser = (data) => {
+const updateUser = () => {
   return async () => {
     try {
-      await axios.put(`/auth`, data);
+      await axios.put(`/auth`);
     } catch (error) {
       console.log(error);
     }
