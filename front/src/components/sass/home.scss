@@ -21,21 +21,20 @@
   font-weight: bold;
   font-size: 1.1em;
 }
-.welcome__tools {
+.function {
   height: 50vh;
   display: flex;
   flex-direction: column;
   margin: auto;
   width: 60vw;
-
-  &--titles {
-    padding: 30px 0 60px;
-    font-size: 1.2em;
-    color: black;
-    margin: auto;
-  }
 }
-.welcome__list {
+.function__title {
+  padding: 30px 0 60px;
+  font-size: 1.2em;
+  color: black;
+  margin: auto;
+}
+.function__list {
   width: 65vw;
   height: 50vh;
   opacity: 0.9;
@@ -43,31 +42,29 @@
   justify-content: space-around;
   margin: auto;
   padding: 0;
+}
+.function__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-basis: 15%;
+  height: 40%;
+  background-color: $color-background;
+  border-radius: 5%;
+  padding: 10px;
+  box-shadow: 5px 5px 5px #000000;
 
-  &--active {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-basis: 15%;
-    height: 40%;
-    background-color: $color-background;
-    border-radius: 5%;
-    padding: 10px;
-    box-shadow: 5px 5px 5px #000000;
-
-    svg {
-      width: 40px;
-      height: 40px;
-      margin: auto;
-    }
+  svg {
+    width: 40px;
+    height: 40px;
+    margin: auto;
   }
-
-  &--text {
-    color: black;
-    font-weight: normal;
-    font-size: 1em;
-    text-align: center;
-  }
+}
+.function__text {
+  color: black;
+  font-weight: normal;
+  font-size: 1em;
+  text-align: center;
 }
 
 /*****************************************************************
@@ -82,25 +79,29 @@
   .welcome__text {
     padding: 10px;
   }
-  .welcome__list--titles {
+  .function__title {
     padding: 1em;
   }
 }
+
+/*****************************************************************
+ *********************    RESPONSIVE    **************************
+ *****************************************************************/
 
 @media screen and (max-width: 900px) {
   .welcome__text {
     padding: 10px;
   }
-  .welcome__list--titles {
+  .function__title {
     text-align: center;
   }
-  .welcome__list {
+  .function__list {
     flex-direction: column;
     width: 200px;
     height: auto;
     align-items: center;
   }
-  .welcome__list--active {
+  .function__item {
     width: 100%;
     height: 200px;
     border-radius: 0;

@@ -30,23 +30,23 @@ const Header = () => {
         />
       </NavLink>
       {userData ? (
-        <ul className="nav__list--active">
-          <li className="nav__link--active">
+        <ul className="nav__list">
+          <li className="nav__item">
             <NavLink to="/profil">
               <h5 className="nav__text">Bienvenue {userData.username}</h5>
             </NavLink>
           </li>
-          <li className="nav__link--active">
+          <li className="nav__item">
             <Logout />
           </li>
         </ul>
       ) : (
         <ul className="nav__list">
           <NavLink to="/login">
-            <li className="nav__link">Connexion</li>
+            <li className="nav__list-text">Connexion</li>
           </NavLink>
           <NavLink to="/register">
-            <li className="nav__link">S'inscrire</li>
+            <li className="nav__list-text">S'inscrire</li>
           </NavLink>
         </ul>
       )}

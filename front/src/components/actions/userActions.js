@@ -1,36 +1,50 @@
-import axios from "axios";
+import axios from "../../interceptors/axios";
 import { setUser } from "../../reducers/userReducer";
 
-const readUser = (user_id) => {
-  return async (dispatch) => {
-    try {
-      const res = await axios.get(`api/user/${user_id}`);
-      return dispatch(setUser(res.data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-const updateUser = (user_id, data) => {
+const readUser = () => {
   return async () => {
     try {
-      await axios.put(`api/user/${user_id}`, data);
+      const res = await axios.get(`/auth`);
+      return setUser(res.data);
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const deleteUser = (user_id) => {
+const updateUser = () => {
   return async () => {
     try {
-      await axios.delete(`api/user/delete/${user_id}`);
+      await axios.put(`/auth`);
     } catch (error) {
       console.log(error);
     }
   };
 };
 
+const deleteUser = () => {
+  return async () => {
+    try {
+      await axios.delete(`/auth`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
-export { readUser, updateUser, deleteUser};
+const LogoutUser=()=>{
+  return async () => {
+    try {
+      await axios.get(`/logout`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+const uploadPicture=(data,id)=>{
+
+}
+
+
+export { readUser, updateUser, deleteUser,LogoutUser,uploadPicture};

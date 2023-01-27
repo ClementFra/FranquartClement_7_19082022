@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "./tokenService";
 
 const Axios = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL:process.env.REACT_APP_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -12,7 +12,6 @@ const Axios = axios.create({
 Axios.interceptors.request.use(
   (config) => {
     const token = TokenService.getLocalRefreshToken();
-    console.log(token)
     if (token) {
       config.headers["x-access-token"] = token;
     }
@@ -29,14 +28,13 @@ Axios.interceptors.response.use(
   },
   async (err) => {
     const originalConfig = err.config;
-
-    if (originalConfig.url !== "/auth/login" && err.response) {
+    if (err.response) {
       // Access Token was expired
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
 
         try {
-          const rs = await Axios.post("/auth/refreshtoken", {
+          const rs = await Axios.post("/auth/refresh", {
             refreshToken: TokenService.getLocalRefreshToken(),
           });
 
@@ -48,6 +46,7 @@ Axios.interceptors.response.use(
           return Promise.reject(_error);
         }
       }
+      
     }
 
     return Promise.reject(err);

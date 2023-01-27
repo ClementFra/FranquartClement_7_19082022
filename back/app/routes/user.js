@@ -11,7 +11,7 @@ const multer = require('../middleware/multer-config')
 
 router.post("/signup",pswd, userCtrl.signup);
 router.post("/login",rateLter, userCtrl.login);
-router.post('/refresh', auth, userCtrl.refresh);
+router.post('/refresh', userCtrl.refresh);
 
 // Router get
 router.get('/logout', userCtrl.logout);

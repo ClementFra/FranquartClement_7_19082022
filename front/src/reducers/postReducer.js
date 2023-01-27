@@ -21,17 +21,8 @@ export const postSlice = createSlice({
         return post;
       });
     },
-    setDislikePost: (state, { payload }) => {
-      state.posts = state.posts.map((post) => {
-        if (post.post_id === payload.post_id) {
-          return { ...post, Likes: post.Likes.filter((id) => id.user_id !== payload.user_id) };
-        }
-
-        return post;
-      });
-    },
   },
 });
 
-export const { setPosts, setDeletePost, setLikePost, setDislikePost } = postSlice.actions;
+export const { setPosts, setDeletePost, setLikePost} = postSlice.actions;
 export default postSlice.reducer;

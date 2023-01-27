@@ -1,11 +1,11 @@
-import axios from "axios";
-import { setPosts, setDeletePost, setLikePost, setDislikePost } from "../../reducers/postReducer";
+import axios from "../../interceptors/axios";
+import { setPosts, setDeletePost, setLikePost} from "../../reducers/postReducer";
 
-const getAllPosts = () => {
-  return async (dispatch) => {
+const readAllPosts = () => {
+  return async () => {
     try {
-      const res = await axios.get("api/post");
-      return dispatch(setPosts(res.data));
+      const res = await axios.get("/post");
+      return setPosts(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -15,7 +15,7 @@ const getAllPosts = () => {
 const createPost = (data) => {
   return async () => {
     try {
-      await axios.post("api/post", data);
+      await axios.post("/post", data);
     } catch (error) {
       console.log(error);
     }
@@ -25,7 +25,7 @@ const createPost = (data) => {
 const updatePost = (post_id, data) => {
   return async () => {
     try {
-      await axios.put(`api/post/${post_id}`, data);
+      await axios.put(`post/${post_id}`, data);
     } catch (error) {
       console.log(error);
     }
@@ -33,10 +33,10 @@ const updatePost = (post_id, data) => {
 };
 
 const deletePost = (post_id) => {
-  return async (dispatch) => {
+  return async () => {
     try {
-      await axios.delete(`api/post/delete/${post_id}`);
-      return dispatch(setDeletePost({ post_id }));
+      await axios.delete(`post/${post_id}`);
+      return setDeletePost({ post_id });
     } catch (error) {
       console.log(error);
     }
@@ -46,33 +46,23 @@ const deletePost = (post_id) => {
 const createComment = (post_id, content) => {
   return async () => {
     try {
-      await axios.post(`api/comment/${post_id}`, { content });
+      await axios.post(`comment/${post_id}`, { content });
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const addLikePost = (post_id, user_id) => {
-  return async (dispatch) => {
+const likePost = (post_id, user_id) => {
+  return async () => {
     try {
-      await axios.post(`api/like/${post_id}`, { user_id });
-      return dispatch(setLikePost({ post_id, user_id }));
+      await axios.post(`${post_id}/like`, { user_id });
+      return setLikePost({ post_id, user_id });
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-const removeLikePost = (post_id, user_id) => {
-  return async (dispatch) => {
-    try {
-      await axios.post(`api/like/${post_id}`, { user_id });
-      return dispatch(setDislikePost({ post_id, user_id }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
 
-export { getAllPosts, createPost, updatePost, deletePost, createComment, addLikePost, removeLikePost };
+export {readAllPosts, createPost, updatePost, deletePost, createComment, likePost};

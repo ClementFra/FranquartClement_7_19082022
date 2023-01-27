@@ -10,7 +10,8 @@ import DeleteProfil from "./deleteProfil";
 import { useDispatch, useSelector } from "react-redux";
 
 //  Styles
-import { Card, Container, Row, Col, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import "../sass/profil.scss";
 
 //  Utils
 import { dateParser } from "../utils/utils";
@@ -28,26 +29,34 @@ const UpdateProfil = () => {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col sm={5}>
-          <Card>
-            <Card.Header as="h4">Biographie</Card.Header>
-            <Card.Body>
-              <Card.Text onClick={() => setUpdateForm(!updateForm)}>
-                {userData.biography}
-              </Card.Text>
-            </Card.Body>
-
+    <section className="profil">
+      <div className="card">
+        <article className="profil__informations">
+          <div>
+            <h1 className="profil__username">{userData.username}</h1>
+            <div>
+              <img
+                className="profil__image"
+                src="https://cdn.pixabay.com/photo/2015/01/09/11/09/meeting-594091_960_720.jpg"
+                alt="avatar"
+              />
+            </div>
+          </div>
+        </article>
+        <article className="update__nav">
+          <div>
+            <h2 className="update__title">Biographie</h2>
+            <p className="update__text">
+              {userData.biography ? userData.biography : "Vive Groupomania"}
+            </p>
             {updateForm === false && (
               <Button
-                variant="secondary"
+                className="update__button"
                 onClick={() => setUpdateForm(!updateForm)}
               >
                 Modifier ma biographie
               </Button>
             )}
-
             {updateForm && (
               <>
                 <textarea
@@ -58,15 +67,16 @@ const UpdateProfil = () => {
                 <Button onClick={handleUpdate}>Valider</Button>
               </>
             )}
-
-            <Card.Footer>
-              <h6>Membre depuis {dateParser(userData.createdAt)}</h6>
+            <article className="footer">
+              <p className="footer__member">
+                Membre depuis {dateParser(userData.createdAt)}
+              </p>
               <DeleteProfil />
-            </Card.Footer>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+            </article>
+          </div>
+        </article>
+      </div>
+    </section>
   );
 };
 

@@ -23,7 +23,7 @@ router.put("/:id", auth, multer, postCtrl.updatePost);
 
 // Router delete
 
-router.delete("/:id", auth, postCtrl.deletePost);
+router.delete("/:id", postCtrl.deletePost);
 
 
 module.exports = router;

@@ -40,36 +40,37 @@ function Login() {
   }
   function handleSubmit(e) {
     e.preventDefault();
+    document.querySelector("#log-error").innerHTML = "";
     const user = {
       ...values,
     };
-    let isValid = validate();
-    if (isValid) {
-      axiosPublic
-        .post("/auth/login", user)
-        .then((res) => {
-          dispatch(setUser(res.data));
-          navigate("/");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
+    const formErrors = checkLogin(values);
+    console.log(formErrors);
+    if (Object.keys(formErrors).length !== 0) {
+      setFormError(formErrors);
       document.querySelector("#log-error").innerHTML =
         "La connexion comprend une erreur.";
     }
+    else{
+      axiosPublic
+      .post("/auth/login", user)
+      .then((res) => {
+        dispatch(setUser(res.data));
+        navigate("/");
+      })
+      .catch((error) => {
+        document.querySelector("#log-error").innerHTML =
+        "L'email ou le mot de passe est invalide.";
+      });
+    }
   }
 
-  function validate() {
-    setFormError(checkLogin(values));
-    return Object.keys(errors).length < 1;
-  }
 
   return (
     <main>
       <section className="login">
-        <h1 className="login__text">Vous connecter</h1>
-        <form className="login__formulaire" onSubmit={handleSubmit}>
+        <h1 className="login__title">Vous connecter</h1>
+        <form className="login__form" onSubmit={handleSubmit}>
           <label className="login__label" htmlFor="email">
             Email
           </label>
@@ -80,7 +81,7 @@ function Login() {
             name="email"
             onChange={handleChange}
           />
-          <p className="login__invalide--text">{errors.email}</p>
+          <p className="invalid__text">{errors.email}</p>
           <label className="login__label" htmlFor="password">
             Mot de passe
           </label>
@@ -91,15 +92,18 @@ function Login() {
             name="password"
             onChange={handleChange}
           />
-          <p className="login__invalide--text">{errors.password}</p>
-          <button className="login__link" type="submit">
+          <p className="invalid__text">{errors.password}</p>
+          <button className="login__button" type="submit">
             connexion
           </button>
         </form>
-        <p id="log-error" className="login__invalide--text"></p>
+        <p id="log-error" className="invalid__text"></p>
       </section>
-      <p className="login__link--text">
-        Pas de compte ? <Link to="/Register">Enregistrez-vous !</Link>{" "}
+      <p className="login__text">
+        Pas de compte ?{" "}
+        <Link to="/Register" className="link__text">
+          Enregistrez-vous !
+        </Link>{" "}
       </p>
     </main>
   );
