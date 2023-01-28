@@ -5,6 +5,7 @@ import { updateUser } from "../actions/userActions";
 
 //  Components
 import DeleteProfil from "./deleteProfil";
+import UploadImage from "./uploadImage";
 
 //  Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -41,17 +42,18 @@ const UpdateProfil = () => {
                 alt="avatar"
               />
             </div>
+            <UploadImage />
           </div>
         </article>
-        <article className="update__nav">
+        <article className="nav__profil">
           <div>
-            <h2 className="update__title">Biographie</h2>
-            <p className="update__text">
+            <h2 className="nav__title">Biographie</h2>
+            <p className="nav__texts">
               {userData.biography ? userData.biography : "Vive Groupomania"}
             </p>
             {updateForm === false && (
               <Button
-                className="update__button"
+                className="nav__button"
                 onClick={() => setUpdateForm(!updateForm)}
               >
                 Modifier ma biographie
@@ -67,8 +69,8 @@ const UpdateProfil = () => {
                 <Button onClick={handleUpdate}>Valider</Button>
               </>
             )}
-            <article className="footer">
-              <p className="footer__member">
+            <article className="member">
+              <p className="member__date">
                 Membre depuis {dateParser(userData.createdAt)}
               </p>
               <DeleteProfil />

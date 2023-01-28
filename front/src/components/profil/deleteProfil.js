@@ -17,7 +17,7 @@ const DeleteProfil = () => {
   const handleDelete = () => dispatch(deleteUser(userData._id));
 
   return (
-    <Button className="update__button"
+    <Button className="nav__button"
       onClick={() => {
         if (window.confirm("Voulez-vous supprimer votre profil?")) {
           handleDelete();

@@ -38,7 +38,7 @@ const UploadImage = () => {
         />
       </Form.Group>
 
-      <Button>Envoyer</Button>
+      <Button className="image__button">Envoyer</Button>
     </Form>
   );
 };
