@@ -26,7 +26,7 @@ router.put('/', auth,multer, userCtrl.updateUser);
 
 // Router delete
 
-router.delete('/', auth, userCtrl.deleteUser);
+router.delete('/delete', auth, userCtrl.deleteUser);
 
 
 module.exports = router;

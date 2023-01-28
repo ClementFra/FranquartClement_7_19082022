@@ -29,7 +29,7 @@ const updateUser = () => {
 const deleteUser = () => {
   return async () => {
     try {
-      await axios.delete(`/auth`);
+      await axios.delete(`/auth/delete`);
     } catch (error) {
       console.log(error);
     }

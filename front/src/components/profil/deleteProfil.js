@@ -15,7 +15,6 @@ const DeleteProfil = () => {
   const dispatch = useDispatch();
 
   const handleDelete = () => dispatch(deleteUser(userData._id));
-
   return (
     <Button className="nav__button"
       onClick={() => {
