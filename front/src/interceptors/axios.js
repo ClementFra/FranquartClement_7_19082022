@@ -11,9 +11,9 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use(
   (config) => {
-    const token = TokenService.getLocalRefreshToken();
+    const token = TokenService.getLocalAccessToken();
     if (token) {
-      config.headers["x-access-token"] = token;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -38,8 +38,8 @@ Axios.interceptors.response.use(
             refreshToken: TokenService.getLocalRefreshToken(),
           });
 
-          const { accessToken } = rs.data;
-          TokenService.updateLocalAccessToken(accessToken);
+          const { tokens } = rs.data;
+          TokenService.updateLocalAllToken(tokens);
 
           return Axios(originalConfig);
         } catch (_error) {

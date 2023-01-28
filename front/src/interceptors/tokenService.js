@@ -1,5 +1,5 @@
 import { store } from "reducers/store";
-import { updateToken } from "reducers/userReducer";
+import { updateTokens } from "reducers/userReducer";
 
 
 const getLocalRefreshToken = () => {
@@ -12,14 +12,14 @@ const getLocalAccessToken = () => {
   return state?.accessToken;
 };
 
-const updateLocalAccessToken = (newToken) => {
-  store.dispatch(updateToken(newToken));
+const updateLocalAllToken = (newToken) => {
+  store.dispatch(updateTokens(newToken));
 };
 
 const TokenService = {
   getLocalRefreshToken,
   getLocalAccessToken,
-  updateLocalAccessToken,
+  updateLocalAllToken,
 };
 
 export default TokenService;
