@@ -20,7 +20,7 @@ const UploadImage = () => {
 
     const data = new FormData();
     data.append("file", file);
-    dispatch(uploadPicture(data, userData.id));
+    dispatch(uploadPicture(data, userData._id));
   };
 
   return (

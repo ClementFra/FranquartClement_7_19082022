@@ -1,9 +1,5 @@
-import TokenService from "interceptors/tokenService";
-import { redirect } from "react-router-dom";
-import { store } from "reducers/store";
 import axios from "../../interceptors/axios";
 import { setUser } from "../../reducers/userReducer";
-import { logout } from "../../reducers/userReducer";
 
 const readUser = () => {
   return async () => {
@@ -26,6 +22,16 @@ const updateUser = () => {
   };
 };
 
+const uploadPicture = () => {
+  return async () => {
+    try {
+      await axios.put("/auth");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 const deleteUser = () => {
   return async () => {
     try {
@@ -37,15 +43,13 @@ const deleteUser = () => {
 };
 
 const LogoutUser = () => {
-  try {
-    store.logout.dispatch(logout);
-    TokenService.logout();
-    redirect.push("/login");
-  } catch (error) {
-    console.log(error);
-  }
+  return async () => {
+    try {
+      await axios.get(`/logout`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };
-
-const uploadPicture = (data, id) => {};
 
 export { readUser, updateUser, deleteUser, LogoutUser, uploadPicture };

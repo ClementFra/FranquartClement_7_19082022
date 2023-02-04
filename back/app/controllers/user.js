@@ -134,7 +134,7 @@ exports.refresh = async (req, res) => {
     }
     const expiresIn = parseInt(process.env.JWTExpiration);
     let newAccessToken = jwt.sign(
-      { id: refreshToken.user._id, isAdmin: user.isAdmin },
+      { userId: refreshToken.user._id, isAdmin: user.isAdmin },
       process.env.TOKEN_SECRET,
       { expiresIn }
     );
@@ -277,6 +277,7 @@ exports.updateUser = (req, res, next) => {
  *****************     DELETE THE USER       *********************
  *****************************************************************/
 exports.deleteUser = (req, res, next) => {
+  console.log(req.auth.userId)
   User.findById(req.auth.userId) // Find user and delete
     .then((user) => {
       if (!user) {
@@ -285,7 +286,7 @@ exports.deleteUser = (req, res, next) => {
         User.deleteOne({
           _id: req.auth.userId,
         })
-          .then(() => {
+          .then(() => { 
             res.status(204).send();
           })
           .catch((error) => {

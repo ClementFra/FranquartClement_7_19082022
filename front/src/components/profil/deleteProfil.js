@@ -20,6 +20,7 @@ const DeleteProfil = () => {
       onClick={() => {
         if (window.confirm("Voulez-vous supprimer votre profil?")) {
           handleDelete();
+          window.location.href=('/login');
         }
       }}
     >
