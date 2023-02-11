@@ -271,7 +271,7 @@ exports.updateUser = (req, res, next) => {
         );
       }
     })
-    .catch((error) => res.status(500).json(error)); // Internal Error Server
+    .catch((error) => console.log(error)); // Internal Error Server
 };
 /*****************************************************************
  *****************     DELETE THE USER       *********************

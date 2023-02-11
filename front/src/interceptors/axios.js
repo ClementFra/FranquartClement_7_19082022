@@ -1,7 +1,6 @@
 import axios from "axios";
-import { redirect } from "react-router-dom";
-import { store } from "reducers/store";
 import TokenService from "./tokenService";
+import goLogout from "./tokenService";
 
 const Axios = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -41,13 +40,9 @@ Axios.interceptors.response.use(
           });
 
           TokenService.updateLocalAllToken(rs.data);
-          const logout = () => {
-            store.logout.dispatch(logout);
-            TokenService.logout();
-            redirect.push("/login");
-          };
           return Axios(originalConfig);
         } catch (_error) {
+          goLogout();
           return Promise.reject(_error);
         }
       }

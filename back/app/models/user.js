@@ -26,6 +26,16 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    imageUrl:{
+      type: String,
+      allowNull: true,
+      defaultValue: "./images/Avatar.png"
+    },
+    biography:{
+      type: String,
+      maxlength: 500,
+      default:"Vive Groupomania..."
+    }
   },
   {
     timestamps: true,

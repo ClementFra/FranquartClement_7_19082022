@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 //  Components
 import Login from "../login/login";
-import UpdateProfil from "../../components/profil/updateProfil";
+import UpdateProfil from "../../components/profile/updateProfil";
 
 //  Styles
 import { Container } from "react-bootstrap";
